@@ -31,25 +31,25 @@ function elemClick() {
 	// 设置
 	$(".open-setting").click(function() {
         var getTimestamp = new Date().getTime();
-		plus.webview.create('http://192.168.10.61:8080/hdpt/pos/src/choicesetting.html?timestamp=' + getTimestamp).show();
+		plus.webview.create('src/choicesetting.html?timestamp=' + getTimestamp).show();
 	});
 
 	// 对账
 	$(".open-dz").click(function() {
         var getTimestamp = new Date().getTime();
-		plus.webview.create('http://192.168.10.61:8080/hdpt/pos/src/dz.html?version=0.1&timestamp=' + getTimestamp).show();
+		plus.webview.create('src/dz.html?version=0.1&timestamp=' + getTimestamp).show();
 	});
 
 	// 客服
 	$(".open-help").click(function() {
         var getTimestamp = new Date().getTime();
-		plus.webview.create('http://192.168.10.61:8080/hdpt/pos/src/kefu.html?timestamp=' + getTimestamp).show();
+		plus.webview.create('src/kefu.html?timestamp=' + getTimestamp).show();
 	});
 
 	// 交班
 	$(".jb").click(function() {
         var getTimestamp = new Date().getTime();
-		plus.webview.create('http://192.168.10.61:8080/hdpt/pos/src/jb.html?timestamp=' + getTimestamp).show();
+		plus.webview.create('src/jb.html?timestamp=' + getTimestamp).show();
 	});
 
 	function hasGasstationInfo() {
@@ -79,7 +79,7 @@ function elemClick() {
 			return;
 		}
 		var getTimestamp = new Date().getTime();
-		plus.webview.create('pos/src/payment.html?paymenttype=yxb&timestamp=' + getTimestamp).show();
+		plus.webview.create('src/payment.html?paymenttype=yxb&timestamp=' + getTimestamp).show();
 	});
 
 	// 点击车友网
@@ -113,7 +113,7 @@ function elemClick() {
             return;
         }
 		var getTimestamp = new Date().getTime();
-		plus.webview.create('pos/src/payment.html?paymenttype=wx&timestamp=' + getTimestamp).show();
+		plus.webview.create('src/payment.html?paymenttype=wx&timestamp=' + getTimestamp).show();
 	});
 
 	// 点击支付宝
@@ -122,7 +122,7 @@ function elemClick() {
             return;
         }
 		var getTimestamp = new Date().getTime();
-		plus.webview.create('pos/src/payment.html?paymenttype=zfb&timestamp=' + getTimestamp).show();
+		plus.webview.create('src/payment.html?paymenttype=zfb&timestamp=' + getTimestamp).show();
 	});
 
     // 点击沃支付
@@ -131,7 +131,7 @@ function elemClick() {
             return;
         }
         var getTimestamp = new Date().getTime();
-        plus.webview.create('pos/src/payment.html?paymenttype=wzf&timestamp=' + getTimestamp).show();
+        plus.webview.create('src/payment.html?paymenttype=wzf&timestamp=' + getTimestamp).show();
     });
 
     // 点击翼支付
@@ -140,7 +140,7 @@ function elemClick() {
             return;
         }
         var getTimestamp = new Date().getTime();
-        plus.webview.create('pos/src/payment.html?paymenttype=yzf&timestamp=' + getTimestamp).show();
+        plus.webview.create('src/payment.html?paymenttype=yzf&timestamp=' + getTimestamp).show();
     });
 
 
@@ -149,7 +149,7 @@ function elemClick() {
             return;
         }
         var getTimestamp = new Date().getTime();
-        plus.webview.create('pos/src/payment.html?paymenttype=ccb&timestamp=' + getTimestamp).show();
+        plus.webview.create('src/payment.html?paymenttype=ccb&timestamp=' + getTimestamp).show();
     });
 
 
@@ -158,7 +158,7 @@ function elemClick() {
             return;
         }
         var getTimestamp = new Date().getTime();
-        plus.webview.create('pos/src/websocket.html?timestamp=' + getTimestamp).show();
+        plus.webview.create('src/websocket.html?timestamp=' + getTimestamp).show();
     });
 
 	$(".col-33 img").not(".show").click(function() {
