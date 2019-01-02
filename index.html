@@ -11,7 +11,7 @@
             var scriptsCss = ["css/sm.css", "css/iconfont.css", "index.css"];
             scriptsCss.forEach(function (scriptCss) {
                 // var time = Date.now();
-                scriptCss += "?v=0.15";
+                scriptCss += "?v=0.16";
                 document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
             });
 		</script>
@@ -22,7 +22,7 @@
             var scripts = ["js/zepto.js", "js/plug.js", "js/sm.js", "js/sdk.js", "js/sdk_data_validation.js", "js/sdk_db.js", "js/layer_mobile/layer.js", "index.js"];
             scripts.forEach(function (script) {
                 // var time = Date.now();
-                script += "?v=0.17.2";
+                script += "?v=0.17.3";
                 document.write("<script type='text/javascript' src='" + script + "'><\/script>");
             });
 		</script>
@@ -129,7 +129,7 @@
                 //判断当前浏览器是否支持WebSocket
                 if ('WebSocket' in window) {
                     websocket = new WebSocket("ws://192.168.10.23:8080/websockets");
-                    alert('ok')
+                    // alert('ok')
                 }
                 else {
                     alert('当前环境 Not support websocket')
@@ -137,17 +137,17 @@
 
                 //连接发生错误的回调方法
                 websocket.onerror = function () {
-                    alert("WebSocket连接发生错误");
+                    // alert("WebSocket连接发生错误");
                 };
 
                 //连接成功建立的回调方法
                 websocket.onopen = function () {
-                    alert("WebSocket连接成功");
+                    // alert("WebSocket连接成功");
                 };
 
                 //接收到消息的回调方法
                 websocket.onmessage = function (event) {
-                    alert(event.data);
+                    // alert(event.data);
                     $$.printTicket(event.data);
                     // addMessage(event.data);
                 };
