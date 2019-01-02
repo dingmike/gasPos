@@ -1,0 +1,18 @@
+{
+  "name": "fanheng-web",
+  "version": "1.0.0",
+  "description": "mikding test",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "mik",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.2",
+    "mime": "^2.2.0",
+    "mysql": "^2.15.0"
+  }
+}

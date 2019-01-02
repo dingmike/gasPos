@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>选择收银</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<!--<link rel="stylesheet" type="text/css" href="../css/sm.css?version=0.11">-->
+	<script>
+        var scriptsCss = ["../css/sm.css"];
+        scriptsCss.forEach(function (scriptCss) {
+            // var time = Date.now();
+            scriptCss += "?v=0.15";
+            document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+        });
+	</script>
+	<style type="text/css">
+		.card {
+			background-color: #FFFFFF;
+			padding: 0.5rem 0;
+			border-radius: 0.3rem;
+		}
+
+		input {
+			border: none;
+			border-bottom: 1px solid #DDDDDD;
+			width: 90%;
+			padding-bottom: 5%;
+			box-sizing: border-box;
+			padding-left: 5%;
+			font-size: 0.85rem;
+			color: #E4393C;
+		}
+
+		.card-content-inner p {
+			padding-left: 0.75rem;
+		}
+
+		.flex-box {
+			display: flex;
+			margin-top: 1.5rem;
+		}
+
+		.flex-box div {
+			flex: 1;
+			text-align: center;
+		}
+
+		.flex-box>div img {
+			width: 3rem;
+		}
+
+
+		@font-face {font-family: "iconfont";
+			src: url('//at.alicdn.com/t/font_820380_fhr30imyay.eot?t=1535971421596'); /* IE9*/
+			src: url('//at.alicdn.com/t/font_820380_fhr30imyay.eot?t=1535971421596#iefix') format('embedded-opentype'), /* IE6-IE8 */
+			url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAVEAAsAAAAACFgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY8dkkeY21hcAAAAYAAAABnAAABss26nWxnbHlmAAAB6AAAAVgAAAHw9OrFK2hlYWQAAANAAAAALwAAADYShaa3aGhlYQAAA3AAAAAcAAAAJAfeA4ZobXR4AAADjAAAAA4AAAAUFAAAAGxvY2EAAAOcAAAADAAAAAwA5AFkbWF4cAAAA6gAAAAfAAAAIAESADVuYW1lAAADyAAAAUUAAAJtPlT+fXBvc3QAAAUQAAAAMgAAAE5/kjayeJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeMTzXYW7438AQw9zA0AAUZgTJAQDgfQwQeJztkbENgDAMBC+JQQhRUjJChmAgKoZ2xgiOTcEQvHWR/bJcfIAJKEY1BNJNYugyN7lfWN0XTptXFjJZ0V2PVnuHb/8q2V4Ufif77Zlfm7/nO8lILxi/oHswktcjsOxoNUAeebIWhwB4nGWQv07CUBTGz+ntKaFc2yYlQP1DaYcCCyohZcNInH0JR1cSVjYSF95AR1/AiQGimwuDMTHpIKuPwGCvHgQjyM3NHe757v193wcawNdABzGAHBwCoAGZAhRjaEfgohEeY9SKmz5i3CzkNUjUnAiDJMGASM0j9WbXnZHt15xrJKfmiwHfJhsqdcUSe+TUfZsVVrkOvP6YEkoA1NFaDaxamCljMYIqw9mCwbL+c5/3eEG0GP9Dt7E3+5j1kCfjxeXGYElfMx7Fk+gyI+Rcq9872GZSFk9OLaxGW+EymjZNdT2dTlKidIKo3s0DSeJelgJ5g7RX8aTo0u98mpJ6YIkwhH4vg9JSIr2KXOYTG50WobbdqmADbIPNWOiyidDI+1iI2xg3MNxpOFnRfk5LvQ7NfTd7lzvK4lkWXW+n7s8LUpP1E6X11cvQzHvmbU5IPDc9F+Aby4aHbXicY2BkYGAAYsXeBRfi+W2+MnCzMIDA9c2GsQj6fwMLA3MDkMvBwAQSBQAmvwoPAHicY2BkYGBu+N/AEMPCAAJAkpEBFbACAEcLAm54nGNhYGBgQcMAAQQAFQAAAAAAAAA6AGwAqgD4eJxjYGRgYGBl0GRgZgABJiDmAkIGhv9gPgMADRcBSAB4nGWPTU7DMBCFX/oHpBKqqGCH5AViASj9EatuWFRq911036ZOmyqJI8et1ANwHo7ACTgC3IA78EgnmzaWx9+8eWNPANzgBx6O3y33kT1cMjtyDRe4F65TfxBukF+Em2jjVbhF/U3YxzOmwm10YXmD17hi9oR3YQ8dfAjXcI1P4Tr1L+EG+Vu4iTv8CrfQ8erCPuZeV7iNRy/2x1YvnF6p5UHFockikzm/gple75KFrdLqnGtbxCZTg6BfSVOdaVvdU+zXQ+ciFVmTqgmrOkmMyq3Z6tAFG+fyUa8XiR6EJuVYY/62xgKOcQWFJQ6MMUIYZIjK6Og7VWb0r7FDwl57Vj3N53RbFNT/c4UBAvTPXFO6stJ5Ok+BPV8bUnV0K27LnpQ0kV7NSRKyQl7WtlRC6gE2ZVeOEXpc0Yk/KGdI/wAJWm7IAAAAeJxjYGKAAC4G7ICVkYmRmZGFkZWRjYE1OSM1OZsDTOanpUEYSfkVbGCGIQMDAMcBCvMAAA==') format('woff'),
+			url('//at.alicdn.com/t/font_820380_fhr30imyay.ttf?t=1535971421596') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+			url('//at.alicdn.com/t/font_820380_fhr30imyay.svg?t=1535971421596#iconfont') format('svg'); /* iOS 4.1- */
+		}
+
+		.iconfont {
+			font-family:"iconfont" !important;
+			font-size:16px;
+			font-style:normal;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		.icon-check:before { content: "\e614"; color: #E4393C}
+
+		.icon-checkoff:before { content: "\e61c"; color: #E4393C}
+		.list-block li{
+			border-bottom: 1px solid #eee;
+		}
+	</style>
+	<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+    <script type="text/javascript" src="../js/sm.js?version=0.11"></script>
+    <script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+    <script type="text/javascript" src="../js/common-plus.js?version=0.11"></script>-->
+	<script>
+        var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js","../js/common-plus.js", "../js/common.js", "../js/plug.js", "../js/layer_mobile/layer.js"];
+        scripts.forEach(function (script) {
+            // var time = Date.now();
+            script += "?v=0.15";
+            document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+        });
+	</script>
+
+	<script type="text/template" id="oilprice_Template">
+		<li>
+			<div class="item-content" style="padding-right: 0.75rem;" onclick="getThisGoods(this)">
+				<div class="item-title label" style="width: 50%">
+					<div>{{油品名称}}</div>
+				</div>
+				<div class="item-input" style="width: 25%;">
+					<input readonly style="font-size: 0.65rem;color: #E4393C;" type="text" placeholder="0.00" data-id="{{油品编号}}" value="{{油品价格}}元/L">
+				</div>
+				<i class="iconfont icon-checkoff"></i>
+			</div>
+		</li>
+	</script>
+</head>
+
+<body>
+<div class="page-group">
+	<div class="page page-current">
+		<header class="bar bar-nav" style="background-color: #FFFFFF;">
+			<a onclick="closeme()" class="icon icon-left pull-left back" style="color: #E4393C;"></a>
+			<h1 class="title">收银</h1>
+		</header>
+		<div class="content">
+			<div class="card">
+				<div class="card-content">
+					<div class="list-block">
+						<ul>
+							<!-- Text inputs -->
+							<li>
+								<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">商品名称：</div>
+										<div class="item-input">
+											<input type="text" id="picker" readonly>
+										</div>
+									</div>
+								</div>
+							</li>
+							<!--<li>
+								<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">商品单价：</div>
+										<div class="item-input">
+											<input type="text" value="0" id="unit_price" readonly>
+										</div>
+									</div>
+								</div>
+							</li>-->
+						</ul>
+					</div>
+
+					<div class="card-content-inner" style="padding: 0.75rem 0;">
+						<p style="font-size: 0.75rem;">金额</p>
+						<p style="margin-top: 1rem;">
+							<span style="font-size: 1rem;font-weight: bold;">￥</span>
+							<input type="number" id="price" />
+						</p>
+					</div>
+
+				</div>
+			</div>
+
+			<!--<div class="card">
+				<div class="card-content">
+					<div class="list-block" style="margin: 0">
+						<ul id="oilprice">
+							<li>
+								<div class="item-content">
+									<div class="item-title label">
+										<div>商品名称</div>
+									</div>
+
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+-->
+
+
+			<div class="flex-box">
+				<div id="yxb" style="display: none">
+					<img src="../img/yxb-payment.png" alt="" />
+					<div>油信宝支付</div>
+				</div>
+				<div id="wx" style="display: none">
+					<img src="../img/wx.png" alt="" />
+					<div>微信支付</div>
+				</div>
+				<div id="zfb" style="display: none">
+					<img src="../img/zfb.png" alt="" />
+					<div>支付宝支付</div>
+				</div>
+				<div id="wzf" style="display: none">
+					<img src="../img/wzf.png" alt="" />
+					<div>沃支付</div>
+				</div>
+				<div id="yzf" style="display: none">
+					<img src="../img/yzf.png" alt="" />
+					<div>翼支付</div>
+				</div>
+				<div id="ccb" style="display: none">
+					<img src="../img/scbc.png" style="width: 30%;" alt="" />
+					<div>建行支付</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    var paymenttypeId  =$$.getParameterValue().paymenttype;
+    document.getElementById(paymenttypeId).style.display = 'block';
+    // document.getElementById('wx').style.display = 'block';
+</script>
+<script type="text/javascript">
+
+    $('#picker').val(localStorage.getItem("selectGas"));
+    $("#unit_price").val(localStorage.getItem("selectGasPrice"));
+    /**
+     * 取得交易金额并判断必要的输入
+     * @returns {number} 0: 缺少输入项；非0：交易金额
+     */
+    function getPrice() {
+        var oilType = $("#picker").val();
+        if(!oilType || (oilType == "")) {
+            plus.nativeUI.toast("请选择商品名称");
+            return 0;
+        }
+
+        var price = Number($("#price").val());
+        if(!price || (price == "0")) {
+            plus.nativeUI.toast("请输入正确的金额");
+            return 0;
+        }
+
+        return price;
+    }
+
+    function plusReady() {
+        var userId = $$.CheckloginState();
+        // 油信宝
+        $("#yxb").click(function() {
+            var price = getPrice();
+            if(price == 0) {
+                return;
+            }
+
+            var oilConsumable = oilInfo[0].油品名称;
+            var oilId = oilInfo[0].油品编号;
+            var oilTaxClassificationCode= oilInfo[0].税收分类编号;
+            var oilUnitPrice = oilInfo[0].油品价格;
+
+            var getTimestamp = new Date().getTime();
+            plus.webview.create('saoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
+            $("#price").val("");
+        });
+
+        // 微信、支付宝
+        $("#wx,#zfb").click(function() {
+            var price = Math.round(getPrice() * 100);
+            if(price == 0) {
+                return;
+            }
+
+            var rst = $$.payment(price);
+            tradingLog(JSON.parse(rst));
+        });
+
+
+        $("#wzf").click(function() {
+            var price = getPrice();
+            if(price == 0) {
+                return;
+            }
+            var oilConsumable = oilInfo[0].油品名称;
+            var oilId = oilInfo[0].油品编号;
+            var oilTaxClassificationCode= oilInfo[0].税收分类编号;
+            var oilUnitPrice = oilInfo[0].油品价格;
+            var getTimestamp = new Date().getTime();
+            plus.webview.create('wzfsaoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
+            $("#price").val("");
+        });
+        $("#yzf").click(function() {
+            var price = getPrice();
+            if(price == 0) {
+                return;
+            }
+            var oilConsumable = oilInfo[0].油品名称;
+            var oilId = oilInfo[0].油品编号;
+            var oilTaxClassificationCode= oilInfo[0].税收分类编号;
+            var oilUnitPrice = oilInfo[0].油品价格;
+            var getTimestamp = new Date().getTime();
+            plus.webview.create('yzfsaoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
+            $("#price").val("");
+        });
+
+        $("#ccb").click(function() {
+            var price = Math.round(getPrice() * 100);
+            if(price == 0) {
+                return;
+            }
+            var rst = $$.paymentByBank(price);
+            tradingLog(JSON.parse(rst));
+        });
+
+        // 交易登陆存储过程
+        function tradingLog(rst) {
+            rst.amount = rst.amount / 100;
+            var oilInfo = localStorage.getItem()
+            alert()
+            var data = {
+                "业务类型": rst.business_id,
+                "金额": rst.amount,
+                "优惠金额": " ",
+                "实付金额": rst.amount,
+                "流水号": rst.trace_no,
+                "原始流水号": " ",
+                "有效期": " ",
+                "批次号": rst.batch_no,
+                "商户号": rst.merch_id,
+                "商户名": rst.merch_name,
+                "终端号": rst.ter_id,
+                "系统参考号": " ",
+                "授权码": " ",
+                "返回码": " ",
+                "发卡行号": " ",
+                "发卡行名称": " ",
+                "卡组织或钱包机构": rst.cups,
+                "卡号": rst.cardno,
+                "交易日期": rst.date,
+                "交易时间": rst.time,
+                "返回码解释": rst.rejcode_cn,
+                "卡片回收标志": " ",
+                "备注字段": " ",
+                "交易唯一标识": " ",
+                "借贷记卡标识": " ",
+                "操作用户": userId,
+                "商品标示": localStorage.getItem('selectGasbhao'),
+                "商品名称": localStorage.getItem('selectGas'),
+                "税收分类编码": localStorage.getItem('selectGasNum'),
+                "商品单价": localStorage.getItem('selectGasPrice')
+            };
+
+            //					var tmpl = "'{{业务类型}}',{{金额}},'{{优惠金额}}',{{实付金额}},{{流水号}},'{{原始流水号}}','{{有效期}}','{{批次号}}','{{商户号}}','{{商户名}}','{{终端号}}','{{系统参考号}}','{{授权码}}','{{返回码}}','{{发卡行号}}','{{发卡行名称}}','{{卡组织或钱包机构}}','{{卡号}}','{{交易日期}}','{{交易时间}}','{{返回码解释}}','{{卡片回收标志}}','{{备注字段}}','{{交易唯一标识}}','{{借贷记卡标识}}','{{操作用户}}'";
+            //					var params = tmpl.t(data);
+            //					var sql = "通联流水登录 " + params;
+            //					var rst = $$.sqlQuery(sql);
+
+            var url = "/AllinTradingRecord";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                success: function(result) {
+                    alert()
+                    $$.printTicket(result.流水号);
+                    rst = [result];
+                },
+                error: function() {
+                    rst = [{
+                        RESULT: -3,
+                        MESSAGE: '通联流水登录，请重试'
+                    }];
+                },
+                dataType: 'json',
+                async: true,
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+            });
+
+            $("#price").val("");
+        }
+        // selectOil();
+    }
+
+    if(window.plus) {
+        plusReady();
+    } else {
+        document.addEventListener('plusready', plusReady, false);
+    }
+</script>
+</body>
+
+</html>

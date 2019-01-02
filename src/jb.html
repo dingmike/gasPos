@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>交班</title>
+		<!--<link rel="stylesheet" href="../css/sm.css?version=0.11" />-->
+		<script>
+            var scriptsCss = ["../css/sm.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+		<style type="text/css">
+			.flex-box {
+				background-color: #FFFFFF;
+				color: hsl(210, 6%, 25%);
+				font-size: 0.65rem;
+			}
+			
+			.box-title {
+				height: 2rem;
+				line-height: 2rem;
+				border-bottom: 1px solid #ddd;
+				padding-left: 0.75rem;
+			}
+			
+			.box-content {
+				display: flex;
+			}
+			
+			.box-content>div {
+				flex: 1;
+				box-sizing: border-box;
+				padding: 0.5rem 0;
+				border-right: 1px solid #D0D0D0;
+				text-align: center;
+			}
+			
+			.txtColor {
+				font-size: 0.7rem;
+				color: #E4393C;
+			}
+			
+			.list-block {
+				margin: 0.3rem 0;
+				font-size: 0.65rem;
+			}
+			
+			.item-media img {
+				width: 5%;
+			}
+			
+			.list-block .item-subtitle {
+				font-size: 0.6rem;
+				color: #999999;
+			}
+			
+			.button {
+				height: 2rem;
+				width: 90%;
+				left: 5%;
+			}
+			
+			.button.button-fill {
+				line-height: 2rem;
+			}
+			
+			.jbbtn {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+			}
+			
+			.noData {
+				width: 100%;
+				text-align: center;
+				padding-top: 5rem;
+				font-size: 0.75rem;
+				display: none;
+			}
+			
+			.noData img {
+				width: 30%;
+			}
+		</style>
+		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/plug.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/layer_mobile/layer.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common-plus.js?version=0.11"></script>-->
+		<script>
+            var scripts = ["../js/zepto.js", "../js/sdk.js", "../js/common.js", "../js/plug.js", "../js/layer_mobile/layer.js", "../js/common-plus.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.15";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+		<script type="text/template" id="listData_Template">
+			<li id="{{T0004_RECORDS_NUM}}">
+				<div class="item-content">
+					<div class="item-media"><img src="{{src}}" style='width: 2.2rem;'></div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">{{name}}</div>
+							<div class="item-after">￥{{T0004_EXCHANGE_AMOUNT}}</div>
+						</div>
+						<div class="item-subtitle">{{DATA_CREATE_TIME}}</div>
+					</div>
+				</div>
+			</li>
+		</script>
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current">
+				<header class="bar bar-nav" style="background-color: #FFFFFF;">
+					<a class="icon icon-left pull-left" onclick="closeme()" style="color: #E4393C;"></a>
+					<h1 class="title">当班数据</h1>
+				</header>
+				<nav class="bar bar-tab" style="background-color: #FFFFFF;height: 3rem;">
+					<a class="button button-fill button-danger" style="margin-top: 1%;">交班</a>
+				</nav>
+				<div class="content">
+
+					<!--统计部分-->
+					<div class="flex-box">
+						<div class="box-title"></div>
+						<div class="box-content">
+							<div>
+								<div class="txtColor price">0.00元</div>
+								<div>总金额</div>
+							</div>
+							<div>
+								<div class="txtColor num">0笔</div>
+								<div>成交数</div>
+							</div>
+						</div>
+					</div>
+					<div class="list-block media-list">
+						<ul id="listData"></ul>
+						<div class="noData">
+							<img src="../img/noDate.png" alt="" />
+							<div>暂时没有对应的数据</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+
+			function plusReady() {
+				var userId = $$.CheckloginState();
+				var uuid = $$.TerminalNum();
+				var dealFlowData, totalPriceData;
+				var jbPage = {
+					nowDate: function() {
+						var myDate = new Date();
+						var myYear = myDate.getFullYear();
+						var myMonth = myDate.getMonth() + 1;
+						var myDate = myDate.getDate();
+						myMonth = myMonth < 10 ? "0" + myMonth : myMonth;
+						myDate = myDate < 10 ? "0" + myDate : myDate;
+						var dateArry = [];
+						dateArry[0] = myYear + myMonth + myDate;
+						dateArry[1] = myYear + "-" + myMonth + "-" + myDate;
+						return dateArry;
+					},
+
+					// 当班流水信息查询  参数: POS机串码    收银员标识
+					dealFlow: function() {
+						var queryDate = this.nowDate()[0];
+						var data = {
+							"POS机串码": uuid,
+							"收银员标识": userId,
+						}
+						var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
+						var params = tmpl.t(data);
+						var sql = "当班流水信息查询 " + params;
+						dealFlowData = $$.sqlQuery(sql);
+						if(dealFlowData.length > 0) {
+							for(var i = 0; i < dealFlowData.length; i++) {
+								if(dealFlowData[i].T0004_EXCHANGE_TYPE == "微信") {
+									dealFlowData[i].src = "../img/wx.png";
+									dealFlowData[i].name = "微信";
+								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "沃支付") {
+                                    dealFlowData[i].src = "../img/wzf.png";
+                                    dealFlowData[i].name = "沃支付";
+								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "支付宝") {
+									dealFlowData[i].src = "../img/zfb.png";
+									dealFlowData[i].name = "支付宝";
+								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "油信宝") {
+									dealFlowData[i].src = "../img/yxb.png";
+									dealFlowData[i].name = "油信宝";
+								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "智慧城24.1") {
+									dealFlowData[i].src = "../img/zhc.png";
+									dealFlowData[i].name = "智慧城24.1";
+								}
+							}
+							$$.Fill("#listData", dealFlowData);
+						} else {
+							$(".noData").show();
+						}
+					},
+
+					// 当班流水信息总金额笔数查询  参数：POS机串码   收银员标识
+					totalPrice: function() {
+						var queryDate = this.nowDate();
+						var data = {
+							"POS机串码": uuid,
+							"收银员标识": userId,
+						}
+						var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
+						var params = tmpl.t(data);
+						var sql = "当班流水信息总金额笔数查询 " + params;
+						totalPriceData = $$.sqlQuery(sql);
+						if(totalPriceData && totalPriceData[0].EXCHANGE_COUNT != "0") {
+							var total = totalPriceData.filter(function(val) {
+								return val.T0004_EXCHANGE_TYPE == "全部";
+							});
+							$(".price").text(total[0].EXCHANGE_AMOUNT + "元");
+							$(".num").text(total[0].EXCHANGE_COUNT + "笔");
+						}
+					}
+				}
+
+				$(".box-title").text("当日统计(" + jbPage.nowDate()[1] + ")");
+				jbPage.dealFlow();
+				jbPage.totalPrice();
+
+				// 列表跳转详情
+				$("#listData").on("click", "li", function() {
+					var dzId = $(this).attr("id");
+					var getTimestamp = new Date().getTime();
+					var w = plus.webview.create("../src/details.html?timestamp=" + getTimestamp + "&dzId=" + dzId);
+					w.show();
+				});
+
+				// 交班
+				$(".button").click(function() {
+					// 打印数据
+					if(dealFlowData.length > 0) {
+						var dataArray = ["1", "16", "0", "1", "0"];
+						var printText;
+						var blank30 = "                              ";
+						printText = blank30.substr(0, 22) + "交班记录\n"
+						for(var i = 0; i < totalPriceData.length; i++) {
+//							if(totalPriceData[i].T0004_EXCHANGE_TYPE == "二维码") {
+//								totalPriceData[i].T0004_EXCHANGE_TYPE = "油信宝";
+//								printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
+//							} else if(totalPriceData[i].T0004_EXCHANGE_TYPE == "微信" || totalPriceData[i].T0004_EXCHANGE_TYPE == "全部") {
+//								printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 20) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
+//							} else {
+//								printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
+//							}
+							printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
+						}
+						printText += "订单号" + blank30.substr(0, 28) + "金额\n"
+						printText += "商户名称" + blank30.substr(0, 24) + "时间\n"
+						for(var i = 0; i < dealFlowData.length; i++) {
+							printText += dealFlowData[i].T0004_RECORDS_NUM + "        " + dealFlowData[i].T0004_EXCHANGE_AMOUNT + "\n" + dealFlowData[i].name + "        " + dealFlowData[i].DATA_CREATE_TIME + "\n";
+						}
+						dataArray.push(printText);
+						plus.plugintest.printTicket(
+							dataArray,
+							function(result) {
+								console.log(result);
+							},
+							function(error) {
+								console.log(error)
+							}
+						);
+					}
+
+					$.ajax({
+						url: "/PosLogout",
+						async: false,
+						contentType: "application/x-www-form-urlencoded",
+						success: function(data) {
+							var rst = JSON.parse(data);
+							if(rst.RESULT == "0") {
+								plus.nativeUI.toast("注销成功");
+								$$.LoginInfo.clearLoginInfo();
+
+								// 跳转至登录页面
+								var getTimestamp = new Date().getTime();
+								plus.webview.create('login.html?timestamp=' + getTimestamp, "login").show();
+							}
+						}
+					})
+				});
+			}
+		</script>
+	</body>
+
+</html>

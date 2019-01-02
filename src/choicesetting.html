@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<title>设置</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<script>
+            var scriptsCss = ["../css/sm.css","../css/iconfont.css", "../index.css", "../css/iosSelect.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+		<style type="text/css">
+			.list-block ul ul {
+				padding-left: 0;
+			}
+		</style>
+
+		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sm.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/iosSelect.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/plug.js?version=0.11"></script>-->
+		<script>
+            var scripts = ["../js/zepto.js", "../js/sm.js", "../js/iosSelect.js", "../js/sdk.js", "../js/plug.js", "../js/common-plus.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.15";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current">
+				<header class="bar bar-nav">
+					<a onclick="closeme()" class="icon icon-left pull-left" style="color: #E4393C;"></a>
+					<h1 class="title">设置</h1>
+				</header>
+
+				<div class="content">
+					<div class="card">
+						<div class="card-header" id="station_setting">
+							油站信息核对
+							<span class="icon icon-right"></span>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header" id="price_setting">
+							油价信息核对
+							<span class="icon icon-right"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+			
+			function plusReady() {
+				$('#station_setting').click(function () {
+                    var getTimestamp = new Date().getTime();
+                    plus.webview.create('setting.html?timestamp='+getTimestamp).show()
+                });
+
+                $('#price_setting').click(function () {
+                    var getTimestamp = new Date().getTime();
+                    plus.webview.create('oilpricesetting.html?timestamp='+getTimestamp).show()
+                });
+            }
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>扫一扫</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+		<script>
+            var scriptsCss = ["../css/sm.css", "../index.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+		<style type="text/css">
+			.price {
+				margin-top: 1rem;
+				font-size: 1rem;
+				color: #E4393C;
+			}
+			
+			.invalid {
+				text-align: center;
+				margin-top: 4rem;
+				font-size: 0.7rem;
+			}
+			
+			.invalid img {
+				width: 40%;
+				margin-bottom: 5%;
+			}
+		</style>
+		<script>
+            var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js","../js/common-plus.js", "../js/common.js", "../js/plug.js", "../js/layer_mobile/layer.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.15";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current" style="background-color: #000000;">
+				<div class="content">
+					<div id="bcid"></div>
+				</div>
+
+				<!--二维码无效-->
+				<div class="popup popup-invalid" style="background-color: #FFFFFF;">
+					<header class="bar bar-nav">
+						<a class="icon icon-left pull-left" onclick="closeme()" style="color: #E4393C;"></a>
+						<h1 class="title">二维码信息</h1>
+					</header>
+					<div class="content">
+						<div class="invalid">
+							<img src="../img/invalid.jpg" alt="" />
+							<div>二维码无效，请联系客服人员</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script type="text/javascript">
+			var userId, uuid, QRcode,  webview, scanPage;
+
+			function plusReady() {
+				userId = $$.CheckloginState();
+				uuid = $$.TerminalNum();
+				webview = plus.webview.currentWebview();
+				startRecognize();
+				scan.start();
+
+				// 扫一扫页面对象
+				scanPage = {
+					// 二维码信息查询   参数:  POS机串码   二维码编码  
+					codeInfo: function() {
+                        scanPage.tradingLog();
+					},
+					// 交易登陆   参数:  POS机串码   二维码编码    账单分类(油品，非油品，其他)
+					tradingLog: function() {
+						var price = Number($$.getParameterValue().amount);//商品价格
+						var oilId = Number($$.getParameterValue().oilId);//商品标示
+						var oilConsumable = decodeURI($$.getParameterValue().oilConsumable);//商品名称
+						var oilTaxClassificationCode = decodeURI($$.getParameterValue().oilTaxClassificationCode);//税收分类编码
+						var oilUnitPrice = Number($$.getParameterValue().oilUnitPrice);//商品单价
+
+						if(oilConsumable == ''){
+                            plus.nativeUI.toast("请选择正确的油品");
+                            webview.close();
+                            return
+						}
+                        var databalance = {
+                            "金额": price
+							,"APP商户标识": 1
+                        };
+                        var tmpl = "'{{金额}}',{{APP商户标识}}";
+                        var params = tmpl.t(databalance);
+                        var sql = "备付金状态判断 " + params;
+                        var balanceData = $$.sqlQuery(sql);
+                        if(balanceData[0].RESULT == 0 || balanceData[0].RESULT == -1){
+
+                            var sqlsMoney = "SELECT [M0007_BALANCE] AS 剩余金额 FROM [M0007_APPSTORE] WHERE M0007_ID = "+balanceData[0].APP商户标识
+                            var sqlsMoneyData = $$.sqlQuery(sqlsMoney);
+
+                            var sqlDiff = "SELECT TOP(1) DATEDIFF(\"HOUR\",M0013_DATA_CREATE,getdate()) AS 时间差 FROM [M0013_SMS] WHERE ([M0013_ACTION_SCOPE] = 'bfjcz' OR [M0013_ACTION_SCOPE] = 'bfjczyyb') AND [M0013_SEND_STATE] = 'ok' AND M0007_ID = "+balanceData[0].APP商户标识+" ORDER BY M0013_DATA_CREATE DESC"
+                            var diff = $$.sqlQuery(sqlDiff);
+                            if((diff.length>0 && diff[0].时间差>1) || diff.length==0){
+
+
+
+
+
+
+                                var sql = "SELECT [M0012_RESERVE_GOLD_PHONE] FROM [M0012_RESERVE_GOLD_RECHARGE_CONTACTS] WHERE [M0007_ID] = "+balanceData[0].APP商户标识+" AND DATA_TYPE = 1  AND DATA_STATE = 1";
+                                var tel = $$.sqlQuery(sql);
+                                var telString = '';
+                                for(i=0;i<tel.length;i++){
+                                    if(i == 0){
+                                        telString += tel[i].M0012_RESERVE_GOLD_PHONE;
+                                    }else{
+                                        telString += "," + tel[i].M0012_RESERVE_GOLD_PHONE;
+                                    }
+                                }
+                                var smsurl = "/DYSendSms";
+                                if(telString.length>10){
+                                    var data = {
+                                        "作用域标识": "bfjcz",
+                                        "接收电话": telString,
+                                        "APP商户名称": balanceData[0].APP商户名称,
+                                        "APP商户标识": balanceData[0].APP商户标识,
+										"剩余金额":sqlsMoneyData[0].剩余金额
+                                    };
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: smsurl,
+                                        data: data,
+                                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                        success: function(result) {
+
+                                        },
+                                        dataType: 'json',
+                                        async: false
+                                    });
+								}
+
+                                var sqlyyb = "SELECT [M0012_RESERVE_GOLD_PHONE] FROM [M0012_RESERVE_GOLD_RECHARGE_CONTACTS] WHERE [M0007_ID] = "+balanceData[0].APP商户标识+" AND DATA_TYPE = 2 AND DATA_STATE = 1";
+                                var telyyb = $$.sqlQuery(sqlyyb);
+                                var telStringYyb = '';
+                                for(j=0;j<telyyb.length;j++){
+                                    if(j == 0){
+                                        telStringYyb += telyyb[j].M0012_RESERVE_GOLD_PHONE;
+                                    }else{
+                                        telStringYyb += "," + telyyb[j].M0012_RESERVE_GOLD_PHONE;
+                                    }
+                                }
+                                var smsurlyyb = "/DYSendSms";
+                                if(telStringYyb.length>10){
+                                    var datayyb = {
+                                        "作用域标识": "bfjczyyb",
+                                        "接收电话": telStringYyb,
+                                        "APP商户名称": balanceData[0].APP商户名称,
+                                        "APP商户标识": balanceData[0].APP商户标识,
+                                        "剩余金额":sqlsMoneyData[0].剩余金额
+                                    };
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: smsurlyyb,
+                                        data: datayyb,
+                                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                        success: function(result) {
+                                        },
+                                        dataType: 'json',
+                                        async: false
+                                    });
+								}
+                            }
+                        }
+                        if(balanceData[0].RESULT == -1){
+                            plus.nativeUI.toast(balanceData[0].MESSAGE);
+                            closeme();
+                            return 0;
+						}else{
+                            var appId = 1;//油信宝的APP商户标识
+                            hxSuccess(QRcode,uuid,price,$$.CheckloginState(),oilId,oilConsumable,oilTaxClassificationCode,oilUnitPrice,appId);
+						}
+					}
+				}
+			}
+
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+
+			// 扫码相关
+			var scan = null;
+
+			function onmarked(type, result) {
+				var text = '未知: ';
+				switch(type) {
+					case plus.barcode.QR:
+						text = 'QR: ';
+						break;
+					case plus.barcode.EAN13:
+						text = 'EAN13: ';
+						break;
+					case plus.barcode.EAN8:
+						text = 'EAN8: ';
+						break;
+				}
+				QRcode = result;
+				if(QRcode.length == 19) {
+					closeScan();
+				} else {
+					scan.close();
+					$.popup('.popup-invalid');
+					$(".popup-overlay.modal-overlay-visible").css("visibility", "hidden");
+				}
+
+			}
+
+			function startRecognize() {
+				scan = new plus.barcode.Barcode('bcid');
+				scan.onmarked = onmarked;
+			}
+
+			function closeScan() {
+				scan.close();
+				scanPage.codeInfo();
+			}
+
+
+
+            function hxSuccess(QRcode,uuid,price,userId,oilId,oilConsumable,oilTaxClassificationCode,oilUnitPrice,appId){
+            var datascanpay = {
+                    "支付条形码": QRcode,
+                    "商品名称": oilConsumable,
+                    "商品编号": oilTaxClassificationCode,
+                    "商品标示": oilId,
+                    "金额": price,
+                    "实付金额": price,
+                    "商品单价": oilUnitPrice,
+                    "操作用户": userId,
+                    "终端号": uuid,
+                    "APP商户标识": appId
+                };
+                var url = "/wopay/ScanPay";
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: datascanpay,
+                    success: function (result) {
+                        //成功处理
+                        if (result['RESULT'] == 1) {//失败时
+                            plus.nativeUI.toast(result['MESSAGE']);
+                            closeme();
+                            return 0;
+                        } else {
+                            $$.printTicket(result.流水号);
+                            closeme();
+                        }
+                    },
+                    error: function () {
+                        plus.nativeUI.toast("沃支付失败，请重试");
+                        closeme();
+                        return 0;
+                    },
+                    dataType: 'json',
+                    async: true,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+                });
+
+            }
+		</script>
+	</body>
+</html>

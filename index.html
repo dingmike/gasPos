@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+		<script>
+            var scriptsCss = ["css/sm.css", "css/iconfont.css", "index.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+		<!--<link rel="stylesheet" type="text/css" href="css/sm.css?version=0.11">
+		<link rel="stylesheet" href="css/iconfont.css?version=0.11" />
+		<link rel="stylesheet" type="text/css" href="index.css?version=0.11" />-->
+		<script>
+            var scripts = ["js/zepto.js", "js/plug.js", "js/sm.js", "js/sdk.js", "js/sdk_data_validation.js", "js/sdk_db.js", "js/layer_mobile/layer.js", "index.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.17.2";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+
+
+		<!--<script type="text/javascript" src="js/zepto.js?version=0.11"></script>
+		<script type="text/javascript" src="js/sm.js?version=0.11"></script>
+		<script type="text/javascript" src="js/sdk.js?version=0.11"></script>
+		<script type="text/javascript" src="js/sdk_data_validation.js?version=0.11"></script>
+		<script type="text/javascript" src="js/sdk_db.js?version=0.11"></script>
+		<script type="text/javascript" src="js/layer_mobile/layer.js?version=0.11"></script>
+		<script type="text/javascript" src="index.js?version=0.11"></script>-->
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current" id="main">
+				<header class="bar bar-nav" style="background-color: #E4393C;">
+					<i class="icon iconfont icon-shezhi pull-right open-setting" style="color: #FFFFFF;"></i>
+					<h1 class="title index-title" style="color: #FFFFFF;">中油北斗汽油平台</h1>
+				</header>
+				<nav class="bar bar-tab">
+					<a class="tab-item external open-dz">
+						<img src="img/dz.png" alt="" class="icon" />
+						<span class="tab-label">对账</span>
+					</a>
+					<a class="tab-item external open-help">
+						<img src="img/kf-index.png" alt="" class="icon" />
+						<span class="tab-label">客服</span>
+					</a>
+					<a class="tab-item external jb">
+						<img src="img/jb.png" alt="" class="icon" />
+						<span class="tab-label">交班</span>
+					</a>
+				</nav>
+				<div class="content">
+					<div class="row">
+						<div class="col-33">
+							<img src="img/yxb-payment.png" id="yxb" class="show"/>
+							<div>油信宝</div>
+						</div>
+						<div class="col-33">
+							<img src="img/tft.jpg" id="tft" />
+							<div>天府通</div>
+						</div>
+						<div class="col-33">
+							<img src="img/cyw.png" id="cyw" class="show"/>
+							<div>车友网</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-33" style="border-right: 1px solid #DDDDDD;">
+							<img src="img/dd.jpg" id="dd" />
+							<div>滴滴</div>
+						</div>
+					</div>
+					<div class="card" style="margin-bottom: 0.3rem">
+						<div class="card-header">第三方服务</div>
+						<div class="card-content">
+							<div class="card-content-inner" style="padding: 0;height: 5rem;">
+								<div class="row">
+									<div class="col-33">
+										<div id="wx">
+											<img src="img/wx.png" alt="" class="show"/>
+											<div>中油微信支付</div>
+										</div>
+									</div>
+									<div class="col-33">
+										<div id="zfb">
+											<img src="img/zfb.png" alt="" class="show"/>
+											<div>中油支付宝支付</div>
+										</div>
+									</div>
+									<div class="col-33">
+										<img src="img/yzf.png" id="yzf"  class="show"/>
+										<div>翼支付</div>
+									</div>
+
+								</div>
+								<div class="row">
+									<div class="col-33">
+										<img src="img/wzf.png" id="wzf" class="show"/>
+										<div>油信宝沃支付</div>
+									</div>
+									<div class="col-33" style="border-right: 1px solid #DDDDDD;">
+										<img src="img/hb.png" id="hb" />
+										<div>和包</div>
+									</div>
+									<div class="col-33">
+											<img src="img/scbc.png" id="ccb" style="width: 54%;" alt="" class="show"/>
+											<div>建行支付</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

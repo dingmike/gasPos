@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--<link rel="stylesheet" type="text/css" href="../css/sm.css?version=0.11">-->
+    <script>
+        var scriptsCss = ["../css/sm.css"];
+        scriptsCss.forEach(function (scriptCss) {
+            // var time = Date.now();
+            scriptCss += "?v=0.15";
+            document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+        });
+    </script>
+    <script>
+        var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js","../js/common-plus.js", "../js/common.js", "../js/plug.js", "../js/layer_mobile/layer.js"];
+        scripts.forEach(function (script) {
+            // var time = Date.now();
+            script += "?v=0.15";
+            document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+        });
+    </script>
+    <style type="text/css">
+        .card {
+            background-color: #FFFFFF;
+            padding: 0.5rem 0;
+            border-radius: 0.3rem;
+        }
+
+        input {
+            border: none;
+            border-bottom: 1px solid #DDDDDD;
+            width: 90%;
+            padding-bottom: 5%;
+            box-sizing: border-box;
+            padding-left: 5%;
+            font-size: 0.85rem;
+            color: #E4393C;
+        }
+
+        .card-content-inner p {
+            padding-left: 0.75rem;
+        }
+
+        .flex-box {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .flex-box div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .flex-box > div img {
+            width: 3rem;
+        }
+
+        @font-face {
+            font-family: "iconfont";
+            src: url('//at.alicdn.com/t/font_820380_fhr30imyay.eot?t=1535971421596'); /* IE9*/
+            src: url('//at.alicdn.com/t/font_820380_fhr30imyay.eot?t=1535971421596#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAVEAAsAAAAACFgAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY8dkkeY21hcAAAAYAAAABnAAABss26nWxnbHlmAAAB6AAAAVgAAAHw9OrFK2hlYWQAAANAAAAALwAAADYShaa3aGhlYQAAA3AAAAAcAAAAJAfeA4ZobXR4AAADjAAAAA4AAAAUFAAAAGxvY2EAAAOcAAAADAAAAAwA5AFkbWF4cAAAA6gAAAAfAAAAIAESADVuYW1lAAADyAAAAUUAAAJtPlT+fXBvc3QAAAUQAAAAMgAAAE5/kjayeJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeMTzXYW7438AQw9zA0AAUZgTJAQDgfQwQeJztkbENgDAMBC+JQQhRUjJChmAgKoZ2xgiOTcEQvHWR/bJcfIAJKEY1BNJNYugyN7lfWN0XTptXFjJZ0V2PVnuHb/8q2V4Ufif77Zlfm7/nO8lILxi/oHswktcjsOxoNUAeebIWhwB4nGWQv07CUBTGz+ntKaFc2yYlQP1DaYcCCyohZcNInH0JR1cSVjYSF95AR1/AiQGimwuDMTHpIKuPwGCvHgQjyM3NHe757v193wcawNdABzGAHBwCoAGZAhRjaEfgohEeY9SKmz5i3CzkNUjUnAiDJMGASM0j9WbXnZHt15xrJKfmiwHfJhsqdcUSe+TUfZsVVrkOvP6YEkoA1NFaDaxamCljMYIqw9mCwbL+c5/3eEG0GP9Dt7E3+5j1kCfjxeXGYElfMx7Fk+gyI+Rcq9872GZSFk9OLaxGW+EymjZNdT2dTlKidIKo3s0DSeJelgJ5g7RX8aTo0u98mpJ6YIkwhH4vg9JSIr2KXOYTG50WobbdqmADbIPNWOiyidDI+1iI2xg3MNxpOFnRfk5LvQ7NfTd7lzvK4lkWXW+n7s8LUpP1E6X11cvQzHvmbU5IPDc9F+Aby4aHbXicY2BkYGAAYsXeBRfi+W2+MnCzMIDA9c2GsQj6fwMLA3MDkMvBwAQSBQAmvwoPAHicY2BkYGBu+N/AEMPCAAJAkpEBFbACAEcLAm54nGNhYGBgQcMAAQQAFQAAAAAAAAA6AGwAqgD4eJxjYGRgYGBl0GRgZgABJiDmAkIGhv9gPgMADRcBSAB4nGWPTU7DMBCFX/oHpBKqqGCH5AViASj9EatuWFRq911036ZOmyqJI8et1ANwHo7ACTgC3IA78EgnmzaWx9+8eWNPANzgBx6O3y33kT1cMjtyDRe4F65TfxBukF+Em2jjVbhF/U3YxzOmwm10YXmD17hi9oR3YQ8dfAjXcI1P4Tr1L+EG+Vu4iTv8CrfQ8erCPuZeV7iNRy/2x1YvnF6p5UHFockikzm/gple75KFrdLqnGtbxCZTg6BfSVOdaVvdU+zXQ+ciFVmTqgmrOkmMyq3Z6tAFG+fyUa8XiR6EJuVYY/62xgKOcQWFJQ6MMUIYZIjK6Og7VWb0r7FDwl57Vj3N53RbFNT/c4UBAvTPXFO6stJ5Ok+BPV8bUnV0K27LnpQ0kV7NSRKyQl7WtlRC6gE2ZVeOEXpc0Yk/KGdI/wAJWm7IAAAAeJxjYGKAAC4G7ICVkYmRmZGFkZWRjYE1OSM1OZsDTOanpUEYSfkVbGCGIQMDAMcBCvMAAA==') format('woff'),
+            url('//at.alicdn.com/t/font_820380_fhr30imyay.ttf?t=1535971421596') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_820380_fhr30imyay.svg?t=1535971421596#iconfont') format('svg'); /* iOS 4.1- */
+        }
+
+        .iconfont {
+            font-family: "iconfont" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .icon-check:before {
+            content: "\e614";
+            color: #E4393C
+        }
+
+        .icon-checkoff:before {
+            content: "\e61c";
+            color: #E4393C
+        }
+
+        .list-block li {
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <table>
+        <tr>
+            <td>Message</td>
+            <td><input type="text" id="message"></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" id="othername"></td>
+        </tr>
+        <tr>
+            <td><input id="sendbutton" type="button" value="send" onClick="click" disabled="true">
+                </input></td>
+        </tr>
+    </table>
+    <button>测试websocket</button>
+</div>
+
+
+</body>
+
+<script>
+    // var ws = new WebSocket("ws://192.168.10.23:8080");
+    var username = window.prompt("输入你的名字:");
+
+    document.write("Welcome<p id=\"username\">" + username + "</p>");
+
+    if (!window.WebSocket && window.MozWebSocket)
+        window.WebSocket = window.MozWebSocket;
+    if (!window.WebSocket)
+        alert("No Support ");
+    var ws;
+
+    /*    $(document).ready(function(){
+
+            $("#sendbutton").attr("disabled", false);
+            $("#sendbutton").click(sendMessage);
+
+            startWebSocket();
+        })*/
+
+
+    $("#sendbutton").attr("disabled", false);
+    $("#sendbutton").click(sendMessage);
+
+    startWebSocket();
+
+
+    function sendMessage() {
+        var othername = $("#othername").val();
+        var msg = "MSG\t" + username + "_" + othername + "_" + $("#message").val();
+        send(msg);
+    }
+
+    function send(data) {
+        console.log("Send:" + data);
+        ws.send(data);
+    }
+
+    function startWebSocket() {
+        debugger
+        ws = new WebSocket("ws://192.168.10.23:8080/websocket/WebSocket");
+        ws.onopen = function () {
+            console.log("success open");
+            $("#sendbutton").attr("disabled", false);
+        };
+        ws.onmessage = function (event) {
+            console.log("RECEIVE:" + event.data);
+            handleData(event.data);
+        };
+        ws.onclose = function (event) {
+            console.log('Client notified socket has closed', event);
+        };
+
+    }
+
+    function handleData(data) {
+        var vals = data.split("\t");
+        var msgType = vals[0];
+        switch (msgType) {
+            case "NAME":
+                var msg = vals[1];
+                var mes = "NAME" + "\t" + msg + "_" + username;
+                send(mes);
+                break;
+            case "MSG":
+                var val2s = vals[1].split("_");
+                var from = val2s[0];
+                var message = val2s[2];
+                alert(from + ":" + message);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+</script>
+</html>
