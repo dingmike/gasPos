@@ -398,6 +398,7 @@
                                 return 0;
                             }else{
                                 hxSuccess(QRcode);
+                                console.log(tradingLogData.toString());
                                 this.detailsData(tradingLogData[0].流水号);
 							}
 
@@ -406,6 +407,7 @@
 
 					// 流水详情查询
 					detailsData: function(dealFlowId) {
+					    console.log(sql);
 						var sql = "流水信息明细 " + dealFlowId;
 						var detailsData = $$.sqlQuery(sql);
 						if(detailsData[0].T0004_TYPE == "1") {

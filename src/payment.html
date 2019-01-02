@@ -109,7 +109,7 @@
 			localStorage.setItem('selectGas',oilInfo[0].油品名称);
 			localStorage.setItem('selectGasbhao',oilInfo[0].油品编号);
 			localStorage.setItem('selectGasPrice',oilInfo[0].油品价格);
-			localStorage.setItem('selectGasNum',oilInfo[0].税收分类编号);
+			localStorage.setItem('oilTaxClassificationCode',oilInfo[0].税收分类编号);
 			location.href='paymentOver.html?paymenttype='+paymenttypeId;
 
             // var getTimestamp = new Date().getTime();
@@ -276,7 +276,7 @@
     }
 
     function plusReady() {
-        var userId = $$.CheckloginState();
+        // var userId = $$.CheckloginState();
         // 油信宝
        /* $("#yxb").click(function() {
             var price = getPrice();

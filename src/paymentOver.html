@@ -148,7 +148,6 @@
 
 				</div>
 			</div>
-
 			<!--<div class="card">
 				<div class="card-content">
 					<div class="list-block" style="margin: 0">
@@ -166,8 +165,6 @@
 				</div>
 			</div>
 -->
-
-
 			<div class="flex-box">
 				<div id="yxb" style="display: none">
 					<img src="../img/yxb-payment.png" alt="" />
@@ -223,12 +220,15 @@
             plus.nativeUI.toast("请输入正确的金额");
             return 0;
         }
-
         return price;
     }
 
     function plusReady() {
         var userId = $$.CheckloginState();
+        var oilConsumable = localStorage.getItem('selectGas'); // 油品名称
+        var oilId = Number(localStorage.getItem('selectGasbhao')); // 油品编号
+        var oilTaxClassificationCode = localStorage.getItem('oilTaxClassificationCode'); // 税收分类编号
+        var oilUnitPrice = Number(localStorage.getItem('selectGasPrice')); // 油品价格
         // 油信宝
         $("#yxb").click(function() {
             var price = getPrice();
@@ -236,10 +236,10 @@
                 return;
             }
 
-            var oilConsumable = oilInfo[0].油品名称;
+            /*var oilConsumable = oilInfo[0].油品名称;
             var oilId = oilInfo[0].油品编号;
             var oilTaxClassificationCode= oilInfo[0].税收分类编号;
-            var oilUnitPrice = oilInfo[0].油品价格;
+            var oilUnitPrice = oilInfo[0].油品价格;*/
 
             var getTimestamp = new Date().getTime();
             plus.webview.create('saoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
@@ -254,6 +254,9 @@
             }
 
             var rst = $$.payment(price);
+            console.log('wx pay now:')
+            console.log(rst)
+			debugger
             tradingLog(JSON.parse(rst));
         });
 
@@ -263,10 +266,10 @@
             if(price == 0) {
                 return;
             }
-            var oilConsumable = oilInfo[0].油品名称;
+          /*  var oilConsumable = localStorage.getItem('selectGas');
             var oilId = oilInfo[0].油品编号;
             var oilTaxClassificationCode= oilInfo[0].税收分类编号;
-            var oilUnitPrice = oilInfo[0].油品价格;
+            var oilUnitPrice = oilInfo[0].油品价格;*/
             var getTimestamp = new Date().getTime();
             plus.webview.create('wzfsaoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
             $("#price").val("");
@@ -276,10 +279,10 @@
             if(price == 0) {
                 return;
             }
-            var oilConsumable = oilInfo[0].油品名称;
+           /* var oilConsumable = oilInfo[0].油品名称;
             var oilId = oilInfo[0].油品编号;
             var oilTaxClassificationCode= oilInfo[0].税收分类编号;
-            var oilUnitPrice = oilInfo[0].油品价格;
+            var oilUnitPrice = oilInfo[0].油品价格;*/
             var getTimestamp = new Date().getTime();
             plus.webview.create('yzfsaoyisao.html?amount='+ price+'&oilId='+oilId+'&oilConsumable='+oilConsumable+'&oilTaxClassificationCode='+oilTaxClassificationCode+'&oilUnitPrice='+oilUnitPrice+'&timestamp='+getTimestamp).show();
             $("#price").val("");
@@ -296,9 +299,46 @@
 
         // 交易登陆存储过程
         function tradingLog(rst) {
+            debugger
+            console.log(rst)
             rst.amount = rst.amount / 100;
-            var oilInfo = localStorage.getItem()
-            alert()
+            console.log(oilTaxClassificationCode)
+            console.log(oilId)
+            console.log(oilConsumable)
+            console.log(oilUnitPrice)
+           /* var data = {
+                "业务类型": '100300001',
+                "金额": 0.01,
+                "优惠金额": " ",
+                "实付金额": 0.01,
+                "流水号": '111963240000460482',
+                "原始流水号": " ",
+                "有效期": " ",
+                "批次号": '000002',
+                "商户号": '990791048166000',
+                "商户名": '西安通联支付测试账号',
+                "终端号": '00000012',
+                "系统参考号": " ",
+                "授权码": " ",
+                "返回码": " ",
+                "发卡行号": " ",
+                "发卡行名称": " ",
+                "卡组织或钱包机构": 'WXP',
+                "卡号": 'opn)buGyiLjW53gN50exBa_-HxVE',
+                "交易日期": '0102',
+                "交易时间": '132659',
+                "返回码解释": '交易成功',
+                "卡片回收标志": " ",
+                "备注字段": " ",
+                "交易唯一标识": " ",
+                "借贷记卡标识": " ",
+                "操作用户": '10107',
+                "商品标示": 4,
+                "商品名称": '98号 车用汽油（V）',
+                "税收分类编码": '10701010101',
+                // "商品单价": oilUnitPrice
+                "商品单价": 100
+            }*/
             var data = {
                 "业务类型": rst.business_id,
                 "金额": rst.amount,
@@ -326,10 +366,11 @@
                 "交易唯一标识": " ",
                 "借贷记卡标识": " ",
                 "操作用户": userId,
-                "商品标示": localStorage.getItem('selectGasbhao'),
-                "商品名称": localStorage.getItem('selectGas'),
-                "税收分类编码": localStorage.getItem('selectGasNum'),
-                "商品单价": localStorage.getItem('selectGasPrice')
+                "商品标示": oilId,
+                "商品名称": oilConsumable,
+                "税收分类编码": oilTaxClassificationCode,
+                "商品单价": oilUnitPrice
+                // "商品单价": 100
             };
 
             //					var tmpl = "'{{业务类型}}',{{金额}},'{{优惠金额}}',{{实付金额}},{{流水号}},'{{原始流水号}}','{{有效期}}','{{批次号}}','{{商户号}}','{{商户名}}','{{终端号}}','{{系统参考号}}','{{授权码}}','{{返回码}}','{{发卡行号}}','{{发卡行名称}}','{{卡组织或钱包机构}}','{{卡号}}','{{交易日期}}','{{交易时间}}','{{返回码解释}}','{{卡片回收标志}}','{{备注字段}}','{{交易唯一标识}}','{{借贷记卡标识}}','{{操作用户}}'";
@@ -343,11 +384,12 @@
                 url: url,
                 data: data,
                 success: function(result) {
-                    alert()
+                    debugger
                     $$.printTicket(result.流水号);
                     rst = [result];
                 },
                 error: function() {
+                    debugger
                     rst = [{
                         RESULT: -3,
                         MESSAGE: '通联流水登录，请重试'
