@@ -116,7 +116,23 @@
                 oilList.forEach(function (obj, index) {
                     for (var i = 0; i < oilPriceList.length; i++) {
 						if (oilList[index].油品编号 == oilPriceList[i].油品编号) {
-                            oilList[index].油品价格 = oilPriceList[i].油品价格;
+debugger
+						    // 添加新的油价信息
+                            switch (oilList[index].油品编号){
+                                case "4":
+                                    oilList[index].油品价格 = localStorage.getItem('price98');
+                                    break;
+                                case "22":
+                                    oilList[index].油品价格 = localStorage.getItem('price92');
+                                    break;
+                                case "13":
+                                    oilList[index].油品价格 = localStorage.getItem('price95');
+                                    break;
+                                default:
+                                    oilList[index].油品价格 = oilPriceList[i].油品价格;
+                            }
+
+                            // oilList[index].油品价格 = oilPriceList[i].油品价格;
 						}
                     }
                 });

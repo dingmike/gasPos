@@ -110,7 +110,8 @@
 			localStorage.setItem('selectGasbhao',oilInfo[0].油品编号);
 			localStorage.setItem('selectGasPrice',oilInfo[0].油品价格);
 			localStorage.setItem('oilTaxClassificationCode',oilInfo[0].税收分类编号);
-			location.href='paymentOver.html?paymenttype='+paymenttypeId;
+            var getTimestamp = new Date().getTime();
+			location.href='paymentOver.html?version=0.1&timestamp='+ getTimestamp + '&paymenttype='+paymenttypeId;
 
             // var getTimestamp = new Date().getTime();
             // plus.webview.create('http://localhost:8087/src/paymentOver.html?version=0.1&timestamp=' + getTimestamp).show();
@@ -235,11 +236,25 @@
 
         var oilIDs = [];
         var oilList = $$.getOilPrice();
-        // var oilList = [{油品编号:92,油品价格:7.0,油品名称:'92号汽油'},{油品编号:95,油品价格:7.0,油品名称:'95号汽油'},{油品编号:97,油品价格:7.0,油品名称:'98号汽油'}];
+		debugger
+        //var oilList = [{油品编号:92,油品价格:7.0,油品名称:'92号汽油'},{油品编号:95,油品价格:7.0,油品名称:'95号汽油'},{油品编号:97,油品价格:7.0,油品名称:'98号汽油'}];
         oilList.forEach(function (obj) {
             for (var i = 0; i < oilPriceList.length; i++) {
                 if (obj.油品编号 == oilPriceList[i].油品编号) {
-                    obj.油品价格 = oilPriceList[i].油品价格;
+					switch (obj.油品编号){
+						case "4":
+                            obj.油品价格 = localStorage.getItem('price98');
+                            break;
+						case "22":
+                            obj.油品价格 = localStorage.getItem('price92');
+                            break;
+                        case "13":
+                            obj.油品价格 = localStorage.getItem('price95');
+                            break;
+						default:
+                            obj.油品价格 = oilPriceList[i].油品价格;
+					}
+                    // obj.油品价格 = oilPriceList[i].油品价格;
                     oilIDs.push(obj.油品名称);
                     oilsInfo.push(obj);
                 }
@@ -259,6 +274,22 @@
      * 取得交易金额并判断必要的输入
      * @returns {number} 0: 缺少输入项；非0：交易金额
      */
+    // 获取
+/*    var newDate = new Date();
+    $.ajax({
+        type: "POST",
+        url: "http://192.168.10.23:8080/GetOilPrice",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        data: {terminal_id: localStorage.getItem('ter_num'), weekday: newDate.getDay()},
+        success: function (data) {
+            var result = JSON.parse(data);
+            console.log(data);
+            localStorage.setItem('price92', result.station_oil_price_92);
+            localStorage.setItem('price95',result.station_oil_price_95);
+            localStorage.setItem('price98',result.station_oil_price_98);
+        }
+    });*/
     function getPrice() {
         var oilType = $("#picker").val();
         if(!oilType || (oilType == "")) {
@@ -397,6 +428,7 @@
             $("#price").val("");
         }*/
         selectOil();
+
     }
 
     if(window.plus) {
