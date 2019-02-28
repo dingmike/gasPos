@@ -104,6 +104,27 @@
 
 			function plusReady() {
                 $$.CheckloginState();
+                // setDefaultPrice();
+                var defaultPrice = [{"油品编号":"4","油品价格":"0.00"},{"油品编号":"13","油品价格":"0.00"},{"油品编号":"22","油品价格":"0.00"}];
+
+                localStorage.setItem('油品信息',JSON.stringify(defaultPrice))
+                // var newDate = new Date();
+                // 获取 后台活动油价信息
+                $.ajax({
+                    type: "POST",
+                    url: "/GetOilPrice",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    async: false,
+                    data: {terminal_id: localStorage.getItem('ter_num')},
+                    success: function (data) {
+                        var result = JSON.parse(data);
+                        console.log(data);
+                        localStorage.setItem('price92', result.station_oil_price_92);
+                        localStorage.setItem('price95',result.station_oil_price_95);
+                        localStorage.setItem('price98',result.station_oil_price_98);
+                    }
+                });
+
 
                 var oilPriceJson = localStorage.getItem('油品信息');
 
@@ -116,7 +137,6 @@
                 oilList.forEach(function (obj, index) {
                     for (var i = 0; i < oilPriceList.length; i++) {
 						if (oilList[index].油品编号 == oilPriceList[i].油品编号) {
-debugger
 						    // 添加新的油价信息
                             switch (oilList[index].油品编号){
                                 case "4":
@@ -171,6 +191,7 @@ debugger
                     plus.nativeUI.toast('修改成功');
                     current.close();
 				});
+
 			}
 		</script>
 	</body>
