@@ -1418,7 +1418,7 @@ $$.TerminalNumVerfiy = function (verfiy) {
             // alert("rst:"+ verfiy(rst))
             return verfiy(terminalId); //
         } else {
-            alert('Get android data failed');
+            // alert('Get android data failed');
         }
     };
     main.startActivityForResult(intent, 0);
@@ -1457,7 +1457,7 @@ $$.TerminalNumSettingInfo = function (settingInfo) {
             localStorage.setItem("ter_num", terminalId);
             settingInfo(terminalId); //
         } else {
-            alert('Get android data failed');
+            // alert('Get android data failed');
         }
     };
     main.startActivityForResult(intent, 0);
@@ -1494,7 +1494,7 @@ $$.TerminalNumAutoLogin = function (back) {
             localStorage.setItem("ter_num", terminalId);
             back(terminalId); //
         } else {
-            alert('Get android data failed');
+            // alert('Get android data failed');
         }
     };
     main.startActivityForResult(intent, 0);
@@ -1530,7 +1530,7 @@ $$.TerminalNum1 = function (username, password, jumpIndex, test) {
             localStorage.setItem("ter_num", terminalId);
             test(username, password, jumpIndex, terminalId); //
         } else {
-            alert('Get android data failed');
+            // alert('Get android data failed');
         }
     };
     main.startActivityForResult(intent, 0);
@@ -1575,7 +1575,7 @@ $$.TerminalNum = function () {
                 localStorage.setItem("ter_num", terminalId);
                 rst = terminalId;
             } else {
-                alert('Get android data failed');
+                // alert('Get android data failed');
             }
         };
         main.startActivityForResult(intent, 0);
@@ -1814,7 +1814,7 @@ $$.payment = function (transName, price, oilInfo, tradingLog) {
     })
     return rst*/
 
-    alert("pay price:" + price)
+    // alert("pay price:" + price)
 
     var rst = "";
     /*
@@ -1853,7 +1853,7 @@ $$.payment = function (transName, price, oilInfo, tradingLog) {
             localStorage.setItem("ter_num", dataObj.terminalId);
             tradingLog(dataObj, oilInfo); //
         } else {
-            alert('failed');
+            // alert('failed');
         }
     };
     main.startActivityForResult(intent, 0);
@@ -1951,6 +1951,7 @@ $$.printThirdTicket = function (dealFlowId) {
  * 打印支付凭证
  */
 $$.printTicket = function (dealFlowId, isReprint) {
+	// alert("流水信息明细 '" + dealFlowId + "'")
     /*var sql = "流水信息明细 '" + dealFlowId + "'";
     var detailsData = $$.sqlQuery(sql);
     if (!detailsData || detailsData.length == 0) {
@@ -2026,7 +2027,7 @@ $$.printTicket = function (dealFlowId, isReprint) {
             body += "发票提取码：" + detail.发票提取码 + "\n";
             var icon = $$.getInvoiceURL(detail.发票提取码);
         }*/
-    alert(detail.发票提取码);
+    // alert(detail.发票提取码);
     if (detail.发票提取码 && detail.发票提取码.trim() != "") {
         var icon = $$.getInvoiceURL(detail.发票提取码);
     }
@@ -2081,6 +2082,25 @@ $$.printTicket = function (dealFlowId, isReprint) {
             {
                 "position": "left",
                 "content": "油站名称:"+ detail.M0005_NAME,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },
+            {
+                "position": "left",
+                "content": "订单号: "+detail.T0004_RECORDS_NUM,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },{
+                "position": "left",
+                "content": "创建时间: "+detail.DATA_CREATE_TIME.split('.')[0],
                 "contenttype": "txt",
                 "bold": "0",
                 "height": "-1",
@@ -2157,9 +2177,9 @@ $$.printTicket = function (dealFlowId, isReprint) {
     intent.putExtra("isPrintTicket", "true");
     var main = plus.android.runtimeMainActivity();
     main.onActivityResult = function (requestCode, resultCode, data) {
-        alert(resultCode);
+        // alert(resultCode);
         var reason=data.getStringExtra("reason");//终端号
-        alert(reason);
+        // alert(reason);
     };
     main.startActivityForResult(intent, 99);
 };

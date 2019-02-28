@@ -321,7 +321,7 @@
                 "业务类型": rst.referenceNo,
                 "金额": amount,
                 "优惠金额": " ",
-                "实付金额": rst.amount,
+                "实付金额": amount,
                 "流水号": rst.traceNo,
                 "原始流水号": " ",
                 "有效期": " ",
@@ -344,8 +344,8 @@
                 "交易唯一标识": " ",
                 "借贷记卡标识": " ",
                 "操作用户": userId,
-                "商品标示": oilInfo.oilConsumable,
-                "商品名称": oilInfo.oilId,
+                "商品标示": oilInfo.oilId,
+                "商品名称": oilInfo.oilConsumable,
                 "税收分类编码": oilInfo.oilTaxClassificationCode,
                 "商品单价": oilInfo.oilUnitPrice
             };
@@ -360,6 +360,7 @@
                 url: url,
                 data: data,
                 success: function(result) {
+                    // alert('Next printing..')
                     $$.printTicket(result.流水号);
                     rst = [result];
                 },

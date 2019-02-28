@@ -117,7 +117,7 @@
 */
 
     if(window.plus) {
-        alert(0)
+        // alert(0)
         plusReady();
     } else {
         document.addEventListener('plusready', plusReady, false);
@@ -167,7 +167,7 @@
         });
 
         function test(username, password, jumpIndex, terminal) {
-            alert('ok:' + terminal)
+            // alert('ok:' + terminal)
             if (!username) {
                 plus.nativeUI.toast("请输入账号");
                 return

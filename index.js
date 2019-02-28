@@ -58,7 +58,7 @@ function elemClick() {
         return  $$.TerminalNumVerfiy(verfiy);
     }
     function verfiy(uuid) {
-        alert('verfiy: ' + uuid)
+        // alert('verfiy: ' + uuid)
         var data = {
             "pos机串码": uuid
         };
@@ -67,7 +67,7 @@ function elemClick() {
         var params = tmpl.t(data);
         var sql = "POS机注册信息查询 " + params;
         var queryRegInfoData = $$.sqlQuery(sql);
-        alert('queryRegInfoDataLength:'+queryRegInfoData.length)
+        // alert('queryRegInfoDataLength:'+queryRegInfoData.length)
         if (queryRegInfoData.length == 0) {
             layer.open({
                 content: '请先完善油站信息设置',
