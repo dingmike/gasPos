@@ -10,7 +10,7 @@
         var scriptsCss = ["../css/sm.css"];
         scriptsCss.forEach(function (scriptCss) {
             // var time = Date.now();
-            scriptCss += "?v=0.15";
+            scriptCss += "?v=0.16";
             document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
         });
 	</script>
@@ -236,8 +236,7 @@
 
         var oilIDs = [];
         var oilList = $$.getOilPrice();
-		debugger
-        //var oilList = [{油品编号:92,油品价格:7.0,油品名称:'92号汽油'},{油品编号:95,油品价格:7.0,油品名称:'95号汽油'},{油品编号:97,油品价格:7.0,油品名称:'98号汽油'}];
+        // var oilList = [{油品编号:92,油品价格:7.0,油品名称:'92号汽油'},{油品编号:95,油品价格:7.0,油品名称:'95号汽油'},{油品编号:97,油品价格:7.0,油品名称:'98号汽油'}];
         oilList.forEach(function (obj) {
             for (var i = 0; i < oilPriceList.length; i++) {
                 if (obj.油品编号 == oilPriceList[i].油品编号) {
@@ -428,6 +427,23 @@
             $("#price").val("");
         }*/
         selectOil();
+
+        // var newDate = new Date();
+        // 获取 后台活动油价信息
+        $.ajax({
+            type: "POST",
+            url: "/GetOilPrice",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            async: true,
+            data: {terminal_id: localStorage.getItem('ter_num')},
+            success: function (data) {
+                var result = JSON.parse(data);
+                console.log(data);
+                localStorage.setItem('price92', result.station_oil_price_92);
+                localStorage.setItem('price95',result.station_oil_price_95);
+                localStorage.setItem('price98',result.station_oil_price_98);
+            }
+        });
 
     }
 
