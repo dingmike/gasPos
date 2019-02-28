@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<title>对账</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<style type="text/css">
+			.modal-box {
+				position: absolute;
+				top: 2.2rem;
+				width: 100%;
+				height: 100%;
+				z-index: 100;
+				display: none;
+			}
+			
+			.diy-modal {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				bottom: 0;
+				background-color: #000000;
+				opacity: 0.8;
+			}
+		</style>
+		<!--<link rel="stylesheet" type="text/css" href="../css/sm.css?version=0.11">
+		<link rel="stylesheet" type="text/css" href="../index.css?version=0.11" />
+		<link rel="stylesheet" href="../css/iconfont.css?version=0.11" />-->
+		<script>
+            var scriptsCss = ["../css/sm.css", "../index.css", "../css/iconfont.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+
+
+		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sm.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/plug.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common-plus.js?version=0.11"></script>-->
+		<script>
+            var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js", "../js/common.js", "../js/plug.js", "../js/common-plus.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.15";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+		<!--对账List-->
+		<script type="text/template" id="dzList_Template">
+			<li id="{{T0004_RECORDS_NUM}}">
+				<div class="item-content">
+					<div class="item-media">
+						<img src="{{src}}" style='width: 2.2rem;'>
+					</div>
+					<div class="item-inner">
+						<div class="item-title-row">
+							<div class="item-title">{{name}}</div>
+							<div class="item-after" style="font-size: 0.7rem;">￥{{T0004_EXCHANGE_AMOUNT}}</div>
+						</div>
+						<div class="item-subtitle" style="color: #999999;font-size: 0.6rem;">{{DATA_CREATE_TIME}}</div>
+					</div>
+				</div>
+			</li>
+		</script>
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current">
+				<div class="page page-current">
+					<header class="bar bar-nav" style="background-color: #FFFFFF;">
+						<a onclick="closeme()" class="icon icon-left pull-left" style="color: #E4393C;"></a>
+						<h1 class="title">对账</h1>
+						<span class="icon pull-right iconfont icon-shaixuan sx"></span>
+					</header>
+					<nav class="bar bar-tab close-popup" style="height: 3rem;">
+						<a onclick="closeme()" class="button button-danger back" style="margin-left: 5%;line-height: 2rem;width: 90%;margin-top: 1%;">返回</a>
+					</nav>
+					<div class="modal-box">
+						<div class="diy-modal"></div>
+						<div class="sx-block">
+							<div class="sxitem-title">渠道筛选</div>
+							<div class="sxitem-content">
+								<span class="ready" id="all">全部</span>
+								<span class="ready" id="yxb">油信宝</span>
+								<span class="ready" id="zywxzf">中油微信支付</span>
+								<span class="ready" id="zyzfbzf">中油支付宝支付</span>
+								<span class="ready" id="wzf">沃支付</span>
+								<span class="ready" id="yzf">翼支付</span>
+								<span class="ready" id="cyw">车友网</span>
+								<span id="dd">滴滴</span>
+								<span id="hb">和包</span>
+							</div>
+							<div class="sxbtn">
+								<button class="rest">重置</button>
+								<button class="confirm">确定</button>
+							</div>
+						</div>
+					</div>
+					<div class="content">
+						<!--列表展示-->
+						<div class="content-block-title">
+							<input type="text" id="picker-date" readonly="readonly" />
+							<label class="iconfont icon-time" for="picker-date" style="font-size: 20px;"></label>
+							<div class="total"></div>
+						</div>
+						<div class="list-block media-list">
+							<ul id="dzList"></ul>
+							<div class="noData">
+								<img src="../img/noDate.png" alt="" />
+								<div>暂时没有对应的数据</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+
+			function plusReady() {
+				var userId = $$.CheckloginState();
+
+
+				// var uuid = $$.TerminalNum();
+                $$.TerminalNumAutoLogin(dzTest);
+                dzTest
+				function dzTest(uuid) {
+                    var ChannelAll = new Array();
+                    ChannelAll['all'] = '';
+                    ChannelAll['yxb'] = '油信宝';
+                    ChannelAll['zywxzf'] = '微信';
+                    ChannelAll['zyzfbzf'] = '支付宝';
+                    ChannelAll['wzf'] = '沃支付';
+                    ChannelAll['yzf'] = '翼支付';
+                    ChannelAll['cyw'] = '车友网';
+                    ChannelAll['zhc'] = '智慧城';
+
+                    var dzPage = {
+                        // 获取当前时间
+                        nowDate: function() {
+                            var myDate = new Date();
+                            var myYear = myDate.getFullYear();
+                            var myMonth = myDate.getMonth() + 1;
+                            var myDate = myDate.getDate();
+                            myMonth = myMonth < 10 ? "0" + myMonth : myMonth;
+                            myDate = myDate < 10 ? "0" + myDate : myDate;
+                            var dateArry = [];
+                            dateArry[0] = myYear + myMonth + myDate;
+                            dateArry[1] = myYear + "-" + myMonth + "-" + myDate;
+                            return dateArry;
+                        },
+
+                        // 流水信息查询  参数：交易日期   POS机串码
+                        dealFlow: function(uuid, Date, paymentChannel) {
+                            var queryDate = Date ? Date : this.nowDate()[0];
+                            var paymentChannel = paymentChannel ? paymentChannel : 'all';
+
+                            var paymentChannelType = ChannelAll[paymentChannel];
+                            var data = {
+                                "交易日期": queryDate,
+                                "POS机串码": uuid,
+                                "支付方式": paymentChannelType
+                            };
+                            var tmpl = "'{{交易日期}}','{{POS机串码}}', '{{支付方式}}'";
+                            var params = tmpl.t(data);
+                            var sql = "流水信息查询 " + params;
+                            var dealFlowData = $$.sqlQuery(sql);
+                            $("#dzList").text("");
+                            if(dealFlowData.length > 0) {
+                                $(".noData").hide();
+                                for(var i = 0; i < dealFlowData.length; i++) {
+                                    if(dealFlowData[i].T0004_EXCHANGE_TYPE == "微信") {
+                                        dealFlowData[i].src = "../img/wx.png";
+                                        dealFlowData[i].name = "微信";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "沃支付") {
+                                        dealFlowData[i].src = "../img/wzf.png";
+                                        dealFlowData[i].name = "沃支付";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "翼支付") {
+                                        dealFlowData[i].src = "../img/yzf.png";
+                                        dealFlowData[i].name = "翼支付";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "支付宝") {
+                                        dealFlowData[i].src = "../img/zfb.png";
+                                        dealFlowData[i].name = "支付宝";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "建设银行") {
+                                        dealFlowData[i].src = "../img/scbc.png";
+                                        dealFlowData[i].name = "建设银行";
+                                        // } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "油信宝") {
+                                        // 	dealFlowData[i].src = "../img/yxb.png";
+                                        // 	dealFlowData[i].name = "油信宝";
+                                        // } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "智慧城24.1") {
+                                        // 	dealFlowData[i].src = "../img/zhc.png";
+                                        // 	dealFlowData[i].name = "智慧城24.1";
+                                        // } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "车友网") {
+                                        // 	dealFlowData[i].src = "../img/cyw.png";
+                                        // 	dealFlowData[i].name = "车友网";
+                                    } else {
+                                        dealFlowData[i].src = '../' + dealFlowData[i].M0007_IMAGE;
+                                        dealFlowData[i].name = dealFlowData[i].M0007_NAME;
+                                    }
+                                }
+                                $$.Fill("#dzList", dealFlowData);
+                            } else {
+                                $(".noData").show();
+                            }
+                        },
+
+                        // 流水信息总金额笔数查询  参数：交易日期   POS机串码
+                        totalPrice: function(uuid, Date, paymentChannel) {
+                            var queryDate = Date ? Date : this.nowDate()[0];
+                            var paymentChannel = paymentChannel ? paymentChannel : 'all';
+//						var ChannelAll = new Array();
+//                        ChannelAll['yxb'] = '二维码';
+//                        ChannelAll['zywxzf'] = '微信';
+//                        ChannelAll['zyzfbzf'] = '支付宝';
+//                        ChannelAll['wzf'] = '沃支付';
+                            var paymentChannelType = ChannelAll[paymentChannel];
+                            var data = {
+                                "交易日期": queryDate,
+                                "POS机串码": uuid,
+                                "支付方式": paymentChannelType
+                            };
+                            var tmpl = "'{{交易日期}}','{{POS机串码}}', '{{支付方式}}'";
+                            var params = tmpl.t(data);
+                            var sql = "流水信息总金额笔数查询 " + params;
+                            var totalPriceData = $$.sqlQuery(sql);
+                            var totalPrice = totalPriceData[0].EXCHANGE_COUNT == "0" ? "0.00" : totalPriceData[0].EXCHANGE_AMOUNT;
+                            $(".total").text("总金额  " + totalPrice);
+                        }
+                    }
+
+                    // 日期选择器
+                    var showDate = dzPage.nowDate()[1];
+                    $("#picker-date").val(showDate);
+                    $("#picker-date").calendar({
+                        value: [showDate],
+                        onClose: function(p) {
+                            var Date = $("#picker-date").val();
+                            var paymentChannel = $('.addSelect').attr("id");
+                            Date = Date.replace(/-/g, "");
+                            dzPage.dealFlow(uuid, Date, paymentChannel);
+                            dzPage.totalPrice(uuid, Date, paymentChannel);
+                        }
+                    });
+
+                    dzPage.dealFlow(uuid,'','');
+                    dzPage.totalPrice(uuid,'','');
+
+                    // 列表跳转详情
+                    $("#dzList").on("click", "li", function() {
+                        var dzId = $(this).attr("id");
+                        var getTimestamp = new Date().getTime();
+                        var w = plus.webview.create("details.html?timestamp=" + getTimestamp + "&dzId=" + dzId);
+                        w.show();
+                    });
+
+                    // 对账页面添加筛选
+                    $(".sx").click(function() {
+                        $(".modal-box").toggle();
+                    });
+                    /* $(".sxitem-content span:first-child").click(function() {
+                        $(this).onclick = function () {
+                            alert(this);
+                            // $(this).addClass("addSelect").siblings().removeClass("addSelect");
+                        };
+                    });*/
+                    var lis = $(".sxitem-content").find(".ready");
+                    for(var i = 0; i < lis.length; i++)
+                    {
+                        lis[i].onclick = function ()
+                        {
+                            $(this).addClass("addSelect").siblings().removeClass("addSelect");
+                        }
+                    }
+
+                    $('.sxitem-content span').not('.ready').click(function() {
+                        $.toast("暂未开通")
+                    });
+
+                    // 渠道筛选 重置
+                    $(".rest").click(function() {
+                        $(".sxitem-content span").removeClass("addSelect");
+                    });
+
+                    // 渠道筛选  确定
+                    $(".confirm").click(function() {
+                        $(".modal-box").hide();
+                        var Date = $("#picker-date").val();
+                        var paymentChannel = $('.addSelect').attr("id");
+                        Date = Date.replace(/-/g, "");
+                        dzPage.dealFlow(uuid, Date, paymentChannel);
+                        dzPage.totalPrice(uuid, Date, paymentChannel);
+                    });
+                }
+
+			}
+		</script>
+	</body>
+
+</html>

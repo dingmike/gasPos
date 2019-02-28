@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="pragma" content="no-cache">
+		<title>详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+		<!--<link rel="stylesheet" type="text/css" href="../css/sm.css?version=0.11">
+		<link rel="stylesheet" type="text/css" href="../index.css?version=0.11" />-->
+		<script>
+            var scriptsCss = ["../css/sm.css", "../index.css"];
+            scriptsCss.forEach(function (scriptCss) {
+                // var time = Date.now();
+                scriptCss += "?v=0.15";
+                document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
+            });
+		</script>
+
+		<script type="text/template" id="details_Template">
+			<div class="card">
+				<div class="card-content">
+					<div class="card-content-inner" style="text-align: center;padding: 1rem;">
+						<div style="font-size: 0.8rem;">{{M0005_NAME}}</div>
+						<h1 style="margin: 0.5em 0;">{{T0004_EXCHANGE_AMOUNT}}</h1>
+						<div style="color: #E4393C;font-size: 0.8rem;">核销完成</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-block media-list" style="margin: 0;">
+				<ul>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">商品名称</div>
+									<div class="item-after">{{C0002_CONSUMABLE}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">商品单价</div>
+									<div class="item-after">{{T0004_UNIT_PRICE}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">升数</div>
+									<div class="item-after">{{T0004_OIL_L}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">渠道信息</div>
+									<div class="item-after">{{name}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">创建时间</div>
+									<div class="item-after">{{DATA_CREATE_TIME}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title-row">
+									<div class="item-title">订单号</div>
+									<div class="item-after">{{T0004_RECORDS_NUM}}</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</script>
+		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sm.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/plug.js?version=0.11"></script>
+		<script type="text/javascript" src="../js/common-plus.js?version=0.11"></script>-->
+		<script>
+            var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js", "../js/common.js", "../js/plug.js", "../js/common-plus.js"];
+            scripts.forEach(function (script) {
+                // var time = Date.now();
+                script += "?v=0.15";
+                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+            });
+		</script>
+	</head>
+
+	<body>
+		<div class="page-group">
+			<div class="page page-current">
+				<header class="bar bar-nav">
+					<a onclick="closeme()" class="icon icon-left pull-left back" style="color: #E4393C;"></a>
+					<h1 class="title">账单详情</h1>
+				</header>
+				<nav class="bar bar-tab close-popup" style="height: 3rem;">
+					<a onclick="closeme()" class="button button-danger back" style="margin-left: 5%;line-height: 2rem;width: 90%;margin-top: 1%;">返回</a>
+				</nav>
+				<div class="content" id="details"></div>
+			</div>
+		</div>
+		<script>
+			$$.CheckloginState();
+			var dealFlowId = $$.getParameterValue().dzId;
+			var sql = "流水信息明细 " + dealFlowId;
+			var detailsData = $$.sqlQuery(sql);
+
+			for(var i = 0; i < detailsData.length; i++) {
+//				if(detailsData[i].T0004_EXCHANGE_TYPE == "1") {
+//					detailsData[i].T0004_TYPE = "加油"
+//				}
+//				if(detailsData[i].T0004_EXCHANGE_TYPE == "二维码") {
+//					detailsData[i].name = "油信宝";
+//				} else if(detailsData[i].T0004_EXCHANGE_TYPE == "微信") {
+//					detailsData[i].name = "微信";
+//				} else {
+//					detailsData[i].name = "支付宝";
+//				}
+				detailsData[i].name = detailsData[i].T0004_EXCHANGE_TYPE;
+			}
+			$$.Fill("#details", detailsData);
+		</script>
+	</body>
+
+</html>

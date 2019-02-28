@@ -6,15 +6,20 @@
     <script>
         var scripts = ["../js/zepto.js", "../js/sdk.js", "../js/plug.js", "../js/common-plus.js", "../js/third/zhc.js"];
         scripts.forEach(function (script) {
-            // var time = Date.now();
-            script += "?v=0.15";
+            var time = Date.now();
+            script += "?v=0.15"+time;
             document.write("<script type='text/javascript' src='" + script + "'><\/script>");
         });
     </script>
     <script>
-        zhcServerConnector.create("TOKEN", $$.TerminalNum(), function(msg) {
-            return $$.Verification(msg.data);
-        });
+
+
+        $$.TerminalNumAutoLogin(function (data) {
+            zhcServerConnector.create("TOKEN", data, function(msg) {
+                return $$.Verification(msg.data);
+            });
+        })
+
     </script>
 </head>
 <body>

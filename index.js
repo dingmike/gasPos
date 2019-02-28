@@ -52,8 +52,13 @@ function elemClick() {
 		plus.webview.create('src/jb.html?timestamp=' + getTimestamp).show();
 	});
 
-	function hasGasstationInfo() {
-        var uuid = $$.TerminalNum();
+
+    function hasGasstationInfo() {
+        //var uuid = $$.TerminalNum();
+        return  $$.TerminalNumVerfiy(verfiy);
+    }
+    function verfiy(uuid) {
+        alert('verfiy: ' + uuid)
         var data = {
             "pos机串码": uuid
         };
@@ -62,7 +67,8 @@ function elemClick() {
         var params = tmpl.t(data);
         var sql = "POS机注册信息查询 " + params;
         var queryRegInfoData = $$.sqlQuery(sql);
-        if(queryRegInfoData.length == 0) {
+        alert('queryRegInfoDataLength:'+queryRegInfoData.length)
+        if (queryRegInfoData.length == 0) {
             layer.open({
                 content: '请先完善油站信息设置',
                 skin: 'msg',
@@ -71,7 +77,7 @@ function elemClick() {
             return 0;
         }
         return 1;
-	}
+    }
 
 	// 点击油信宝
 	$("#yxb").click(function() {
@@ -84,33 +90,39 @@ function elemClick() {
 
 	// 点击车友网
 	$("#cyw").click(function() {
-	var uuid = $$.TerminalNum();
-	if(uuid == '10829796'){
-		var getTimestamp = new Date().getTime();
-		var pageId = "cheyouwang";
-		var webview = plus.webview.getWebviewById(pageId);
-		if (webview) {
-			webview.show();
-		} else {
-			// var url ="src/test.html";
-			// var url ="https://test.m.cheyuu.com/html/pos_sheep/index.html";
-			var url ="https://m.cheyuu.com/html/pos_sheep/index.html";
-			plus.webview.create(url, pageId).show();
-		}
-	} else {
-		layer.open({
-			content: '该油站暂未授权',
-			skin: 'msg',
-			time: 1
-		});
-	}
+	// var uuid = $$.TerminalNum();
+    $$.TerminalNumAutoLogin(cywTest);
+
+	function cywTest(uuid) {
+        if(uuid == '10829796'){
+            var getTimestamp = new Date().getTime();
+            var pageId = "cheyouwang";
+            var webview = plus.webview.getWebviewById(pageId);
+            if (webview) {
+                webview.show();
+            } else {
+                // var url ="src/test.html";
+                // var url ="https://test.m.cheyuu.com/html/pos_sheep/index.html";
+                var url ="https://m.cheyuu.com/html/pos_sheep/index.html";
+                plus.webview.create(url, pageId).show();
+            }
+        } else {
+            layer.open({
+                content: '该油站暂未授权',
+                skin: 'msg',
+                time: 1
+            });
+        }
+    }
+
+
 
 	});
 
 	// 点击微信
 	$("#wx").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
 		var getTimestamp = new Date().getTime();
 		plus.webview.create('src/payment.html?paymenttype=wx&timestamp=' + getTimestamp).show();
@@ -119,7 +131,7 @@ function elemClick() {
 	// 点击支付宝
 	$("#zfb").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
 		var getTimestamp = new Date().getTime();
 		plus.webview.create('src/payment.html?paymenttype=zfb&timestamp=' + getTimestamp).show();
@@ -128,7 +140,7 @@ function elemClick() {
     // 点击沃支付
     $("#wzf").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
         var getTimestamp = new Date().getTime();
         plus.webview.create('src/payment.html?paymenttype=wzf&timestamp=' + getTimestamp).show();
@@ -137,7 +149,7 @@ function elemClick() {
     // 点击翼支付
     $("#yzf").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
         var getTimestamp = new Date().getTime();
         plus.webview.create('src/payment.html?paymenttype=yzf&timestamp=' + getTimestamp).show();
@@ -146,7 +158,7 @@ function elemClick() {
 
     $("#ccb").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
         var getTimestamp = new Date().getTime();
         plus.webview.create('src/payment.html?paymenttype=ccb&timestamp=' + getTimestamp).show();
@@ -155,7 +167,7 @@ function elemClick() {
 
     $("#webSocket").click(function() {
         if (!hasGasstationInfo()) {
-            return;
+            // return;
         }
         var getTimestamp = new Date().getTime();
         plus.webview.create('src/websocket.html?timestamp=' + getTimestamp).show();

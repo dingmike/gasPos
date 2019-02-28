@@ -9,8 +9,8 @@
 	<script>
         var scriptsCss = ["../css/sm.css"];
         scriptsCss.forEach(function (scriptCss) {
-            // var time = Date.now();
-            scriptCss += "?v=0.16";
+            var time = Date.now();
+            scriptCss += "?v=0.16"+time;
             document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
         });
 	</script>
@@ -81,8 +81,8 @@
 	<script>
         var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js","../js/common-plus.js", "../js/common.js", "../js/plug.js", "../js/layer_mobile/layer.js"];
         scripts.forEach(function (script) {
-            // var time = Date.now();
-            script += "?v=0.15";
+            var time = Date.now();
+            script += "?v=0.15"+time;
             document.write("<script type='text/javascript' src='" + script + "'><\/script>");
         });
 	</script>
@@ -308,7 +308,7 @@
     function plusReady() {
         // var userId = $$.CheckloginState();
         // 油信宝
-       /* $("#yxb").click(function() {
+        $("#yxb").click(function() {
             var price = getPrice();
             if(price == 0) {
                 return;
@@ -324,18 +324,30 @@
             $("#price").val("");
         });
 
-        // 微信、支付宝
-        $("#wx,#zfb").click(function() {
+        // 微信
+        $("#wx").click(function() {
             var price = Math.round(getPrice() * 100);
             if(price == 0) {
                 return;
             }
+            var transName = '微信消费';
+            // var rst = $$.payment(price);
+            $$.payment(transName,price, oilInfo, tradingLog);
 
-            var rst = $$.payment(price);
-
-            tradingLog(JSON.parse(rst));
+            // tradingLog(JSON.parse(rst));
         });
+        // 支付宝支付
+        $("#zfb").click(function() {
+            var price = Math.round(getPrice() * 100);
+            if(price == 0) {
+                return;
+            }
+            var transName = '支付宝消费';
+            // var rst = $$.payment(price);
+            $$.payment(transName, price, oilInfo, tradingLog);
 
+            // tradingLog(JSON.parse(rst));
+        });
 
         $("#wzf").click(function() {
             var price = getPrice();
@@ -364,30 +376,30 @@
             $("#price").val("");
         });
         // 交易登陆存储过程
-        function tradingLog(rst) {
-            rst.amount = rst.amount / 100;
+        function tradingLog(rst, oilInfo) {
+            var amount = Number(rst.amount) * 0.01;
             var data = {
-                "业务类型": rst.business_id,
-                "金额": rst.amount,
+                "业务类型": rst.referenceNo,
+                "金额": amount,
                 "优惠金额": " ",
                 "实付金额": rst.amount,
-                "流水号": rst.trace_no,
+                "流水号": rst.traceNo,
                 "原始流水号": " ",
                 "有效期": " ",
-                "批次号": rst.batch_no,
-                "商户号": rst.merch_id,
-                "商户名": rst.merch_name,
-                "终端号": rst.ter_id,
+                "批次号": rst.batchNo,
+                "商户号": rst.merchantId,
+                "商户名": rst.merchantName,
+                "终端号": rst.terminalId,
                 "系统参考号": " ",
                 "授权码": " ",
                 "返回码": " ",
                 "发卡行号": " ",
                 "发卡行名称": " ",
-                "卡组织或钱包机构": rst.cups,
-                "卡号": rst.cardno,
+                "卡组织或钱包机构": rst.issue,
+                "卡号": " ",
                 "交易日期": rst.date,
                 "交易时间": rst.time,
-                "返回码解释": rst.rejcode_cn,
+                "返回码解释": " ",
                 "卡片回收标志": " ",
                 "备注字段": " ",
                 "交易唯一标识": " ",
@@ -425,7 +437,7 @@
             });
 
             $("#price").val("");
-        }*/
+        }
         selectOil();
 
         // var newDate = new Date();

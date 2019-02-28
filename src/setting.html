@@ -14,8 +14,8 @@
 		<script>
             var scriptsCss = ["../css/sm.css","../css/iconfont.css", "../index.css", "../css/iosSelect.css"];
             scriptsCss.forEach(function (scriptCss) {
-                // var time = Date.now();
-                scriptCss += "?v=0.15";
+                var time = Date.now();
+                scriptCss += "?v=0.15"+time;
                 document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
             });
 		</script>
@@ -147,208 +147,214 @@
 
 			function plusReady() {
 				var userId = $$.CheckloginState();
-				var uuid = $$.TerminalNum();
-				var oilCard = "";
-				var current;
-				var branchData;
 
-				plus.geolocation.getCurrentPosition(function(p) {
-					lat = p.coords.latitude;
-					lng = p.coords.longitude;
-					console.log('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude)
-				}, function(e) {
-					console.log('Geolocation error: ' + e.message)
-				});
+				$$.TerminalNumSettingInfo(settingInfo);
 
-				// 获得当前窗口
-				current = plus.webview.currentWebview();
+				function settingInfo(uuid) {
+                    var oilCard = "";
+                    var current;
+                    var branchData;
 
-				// 维度  经度  
-				var lat = "0",
-					lng = "0";
+                    plus.geolocation.getCurrentPosition(function(p) {
+                        lat = p.coords.latitude;
+                        lng = p.coords.longitude;
+                        console.log('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude)
+                    }, function(e) {
+                        console.log('Geolocation error: ' + e.message)
+                    });
 
-				$("#uuid").text(uuid);
+                    // 获得当前窗口
+                    current = plus.webview.currentWebview();
 
-				// 设置页面对象
-				var settingPage = {
-					// POS机注册信息查询    参数： pos机串码
-					queryRegInfo: function() {
-						var data = {
-							"pos机串码": uuid
-						}
-						var tmpl = "'{{pos机串码}}'";
-						var params = tmpl.t(data);
-						var sql = "POS机注册信息查询 " + params;
-						var queryRegInfoData = $$.sqlQuery(sql);
-						if(queryRegInfoData.length > 0) {
-							var data = queryRegInfoData[0];
-							$("#name").val(data.M0005_NAME);
-							$("#branchP").val(data.P_M0004_NAME).attr("data-id", data.M0005_PROVINCE);
-							$("#branchC").val(data.C_M0004_NAME).attr("data-id", data.M0005_CITY);
-							$("#detailAddr").val(data.M0005_ADDRESS);
-							$("#oilCard").val(data.M0008_CARD_CD)
-						}
-					},
+                    // 维度  经度
+                    var lat = "0",
+                        lng = "0";
 
-					// POS机注册  参数： POS机串码  加油站名称  省 市 区县   地址  经度  维度    油卡编码
-					bindingPos: function(uuid, name, province, city, county, detailAddr) {
-						var data = {
-							"POS机串码": uuid,
-							"加油站名称": name,
-							"省": province,
-							"市": city,
-							"县区": county,
-							"地址": detailAddr,
-							"经度": lng,
-							"维度": lat,
-							"油卡编码": oilCard,
-							"操作用户": userId
-						};
+                    $("#uuid").text(uuid);
+
+                    // 设置页面对象
+                    var settingPage = {
+                        // POS机注册信息查询    参数： pos机串码
+                        queryRegInfo: function() {
+                            var data = {
+                                "pos机串码": uuid
+                            }
+                            var tmpl = "'{{pos机串码}}'";
+                            var params = tmpl.t(data);
+                            var sql = "POS机注册信息查询 " + params;
+                            var queryRegInfoData = $$.sqlQuery(sql);
+                            if(queryRegInfoData.length > 0) {
+                                var data = queryRegInfoData[0];
+                                $("#name").val(data.M0005_NAME);
+                                $("#branchP").val(data.P_M0004_NAME).attr("data-id", data.M0005_PROVINCE);
+                                $("#branchC").val(data.C_M0004_NAME).attr("data-id", data.M0005_CITY);
+                                $("#detailAddr").val(data.M0005_ADDRESS);
+                                $("#oilCard").val(data.M0008_CARD_CD)
+                            }
+                        },
+
+                        // POS机注册  参数： POS机串码  加油站名称  省 市 区县   地址  经度  维度    油卡编码
+                        bindingPos: function(uuid, name, province, city, county, detailAddr) {
+                            var data = {
+                                "POS机串码": uuid,
+                                "加油站名称": name,
+                                "省": province,
+                                "市": city,
+                                "县区": county,
+                                "地址": detailAddr,
+                                "经度": lng,
+                                "维度": lat,
+                                "油卡编码": oilCard,
+                                "操作用户": userId
+                            };
 //						var tmpl = "'{{POS机串码}}', '{{加油站名称}}', '{{省}}','{{市}}','{{县区}}','{{地址}}',{{经度}},{{维度}},{{油卡编码}},'{{操作用户}}'";
 //						var params = tmpl.t(data);
 //						var sql = "POS机注册 " + params;
 //						var result = $$.sqlQuery(sql);
-						var result = this.registerPos(data);
-						if(result.length > 0) {
-							plus.nativeUI.toast(result[0].MESSAGE);
-							if(result[0].RESULT == "00000000") {
-								current.close();
-							}
-						}
-					},
+                            var result = this.registerPos(data);
+                            if(result.length > 0) {
+                                plus.nativeUI.toast(result[0].MESSAGE);
+                                if(result[0].RESULT == "00000000") {
+                                    current.close();
+                                }
+                            }
+                        },
 
-					registerPos: function (data) {
-						var rst = "";
-						var url = "/PosSetting";
+                        registerPos: function (data) {
+                            var rst = "";
+                            var url = "/PosSetting";
 
-						$.ajax({
-							type: 'POST',
-							url: url,
-							data: data,
-							success: function (result) {
-								rst = [result];
-							},
-							error: function () {
-								rst = [{RESULT: -3, MESSAGE: 'POS设定失败，请重试'}];
-							},
-							dataType: 'json',
-							async: false,
-							contentType: "application/x-www-form-urlencoded; charset=UTF-8"
-						});
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                data: data,
+                                success: function (result) {
+                                    rst = [result];
+                                },
+                                error: function () {
+                                    rst = [{RESULT: -3, MESSAGE: 'POS设定失败，请重试'}];
+                                },
+                                dataType: 'json',
+                                async: false,
+                                contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+                            });
 
-						return rst;
-					},
+                            return rst;
+                        },
 
-					// 分公司查询
-					queryBranch: function(id) {
-						var branchId = id ? id : "0";
-						var data = {
-							"分公司标识": branchId
-						}
-						var tmpl = "{{分公司标识}}";
-						var params = tmpl.t(data);
-						var sql = "分公司查询 " + params;
-						var branchData = $$.sqlQuery(sql);
-						return branchData
+                        // 分公司查询
+                        queryBranch: function(id) {
+                            var branchId = id ? id : "0";
+                            var data = {
+                                "分公司标识": branchId
+                            }
+                            var tmpl = "{{分公司标识}}";
+                            var params = tmpl.t(data);
+                            var sql = "分公司查询 " + params;
+                            var branchData = $$.sqlQuery(sql);
+                            return branchData
 
-					}
-				}
+                        }
+                    }
 
-				// POS机注册信息查询
-				settingPage.queryRegInfo();
+                    // POS机注册信息查询
+                    settingPage.queryRegInfo();
 
-				// 查询省级分公司信息
-				var branchPData = settingPage.queryBranch();
-				var dataP = [];
-				for(var i = 0; i < branchPData.length; i++) {
-					var obj = {
-						"id": branchPData[i].分公司标识,
-						"value": branchPData[i].市级分公司名称
-					}
-					dataP.push(obj);
-				}
+                    // 查询省级分公司信息
+                    var branchPData = settingPage.queryBranch();
+                    var dataP = [];
+                    for(var i = 0; i < branchPData.length; i++) {
+                        var obj = {
+                            "id": branchPData[i].分公司标识,
+                            "value": branchPData[i].市级分公司名称
+                        }
+                        dataP.push(obj);
+                    }
 
-				// 选择省级分公司
-				var showBankDom = document.querySelector('#branchP');
-				showBankDom.addEventListener('click', function() {
-					$("#branchC").val("");
-					var bankId = showBankDom.dataset['id'];
+                    // 选择省级分公司
+                    var showBankDom = document.querySelector('#branchP');
+                    showBankDom.addEventListener('click', function() {
+                        $("#branchC").val("");
+                        var bankId = showBankDom.dataset['id'];
 
-					var bankSelect = new IosSelect(1, [dataP], {
-						container: '.container',
-						title: '选择省级分公司',
-						itemHeight: 50,
-						itemShowCount: 3,
-						oneLevelId: bankId,
-						callback: function(selectOneObj) {
-							showBankDom.value = selectOneObj.value;
-							showBankDom.dataset['id'] = selectOneObj.id;
-							showBankDom.dataset['value'] = selectOneObj.value;
-						}
-					});
-				});
+                        var bankSelect = new IosSelect(1, [dataP], {
+                            container: '.container',
+                            title: '选择省级分公司',
+                            itemHeight: 50,
+                            itemShowCount: 3,
+                            oneLevelId: bankId,
+                            callback: function(selectOneObj) {
+                                showBankDom.value = selectOneObj.value;
+                                showBankDom.dataset['id'] = selectOneObj.id;
+                                showBankDom.dataset['value'] = selectOneObj.value;
+                            }
+                        });
+                    });
 
-				// 选择市级分公司
-				var showBankDomC = document.querySelector('#branchC');
-				showBankDomC.addEventListener('click', function() {
-					var branchCId = $("#branchP").attr("data-id");
-					var branchCData = settingPage.queryBranch(branchCId);
-					var dataC = [];
-					for(var i = 0; i < branchCData.length; i++) {
-						var obj = {
-							"id": branchCData[i].分公司标识,
-							"value": branchCData[i].市级分公司名称
-						}
-						dataC.push(obj);
-					}
+                    // 选择市级分公司
+                    var showBankDomC = document.querySelector('#branchC');
+                    showBankDomC.addEventListener('click', function() {
+                        var branchCId = $("#branchP").attr("data-id");
+                        var branchCData = settingPage.queryBranch(branchCId);
+                        var dataC = [];
+                        for(var i = 0; i < branchCData.length; i++) {
+                            var obj = {
+                                "id": branchCData[i].分公司标识,
+                                "value": branchCData[i].市级分公司名称
+                            }
+                            dataC.push(obj);
+                        }
 
-					var bankId = showBankDomC.dataset['id'];
-					var bankSelect = new IosSelect(1, [dataC], {
-						container: '.container',
-						title: '选择市级分公司',
-						itemHeight: 50,
-						itemShowCount: 3,
-						oneLevelId: bankId,
-						callback: function(selectOneObj) {
-							showBankDomC.value = selectOneObj.value;
-							showBankDomC.dataset['id'] = selectOneObj.id;
-							showBankDomC.dataset['value'] = selectOneObj.value;
-						}
-					});
-				});
+                        var bankId = showBankDomC.dataset['id'];
+                        var bankSelect = new IosSelect(1, [dataC], {
+                            container: '.container',
+                            title: '选择市级分公司',
+                            itemHeight: 50,
+                            itemShowCount: 3,
+                            oneLevelId: bankId,
+                            callback: function(selectOneObj) {
+                                showBankDomC.value = selectOneObj.value;
+                                showBankDomC.dataset['id'] = selectOneObj.id;
+                                showBankDomC.dataset['value'] = selectOneObj.value;
+                            }
+                        });
+                    });
 
-				//  确定按钮点击事件
-				$("#confirm").click(function() {
-					var name = $("#name").val();
-					var branchP = $("#branchP").attr("data-id");
-					var branchC = $("#branchC").attr("data-id");
-					var detailAddr = $("#detailAddr").val();
-					oilCard = $("#oilCard").val();
-					var county = "";
-					if(!name) {
-						$.toast("请输入油站名称");
-						return
-					}
-					if(!$("#branchP").val()) {
-						$.toast("请选择省级分公司");
-						return
-					}
-					if(!$("#branchC").val()) {
-						$.toast("请选择市级分公司");
-						return
-					}
-					if(!detailAddr) {
-						$.toast("请填写详细地址");
-						return
-					}
-					if(!oilCard) {
-						$.toast("请填写油卡编号");
-						return
-					}
+                    //  确定按钮点击事件
+                    $("#confirm").click(function() {
+                        var name = $("#name").val();
+                        var branchP = $("#branchP").attr("data-id");
+                        var branchC = $("#branchC").attr("data-id");
+                        var detailAddr = $("#detailAddr").val();
+                        oilCard = $("#oilCard").val();
+                        var county = "";
+                        if(!name) {
+                            $.toast("请输入油站名称");
+                            return
+                        }
+                        if(!$("#branchP").val()) {
+                            $.toast("请选择省级分公司");
+                            return
+                        }
+                        if(!$("#branchC").val()) {
+                            $.toast("请选择市级分公司");
+                            return
+                        }
+                        if(!detailAddr) {
+                            $.toast("请填写详细地址");
+                            return
+                        }
+                        if(!oilCard) {
+                            $.toast("请填写油卡编号");
+                            return
+                        }
 
-					//  POS机注册
-					settingPage.bindingPos(uuid, name, branchP, branchC, county, detailAddr);
-				});
+                        //  POS机注册
+                        settingPage.bindingPos(uuid, name, branchP, branchC, county, detailAddr);
+                    });
+                }
+
+
 			}
 		</script>
 	</body>

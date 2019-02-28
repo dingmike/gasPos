@@ -9,8 +9,8 @@
 	<script>
         var scriptsCss = ["../css/sm.css"];
         scriptsCss.forEach(function (scriptCss) {
-            // var time = Date.now();
-            scriptCss += "?v=0.15";
+            var time = Date.now();
+            scriptCss += "?v=0.15"+time;
             document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
         });
 	</script>
@@ -229,6 +229,14 @@
         var oilId = Number(localStorage.getItem('selectGasbhao')); // 油品编号
         var oilTaxClassificationCode = localStorage.getItem('oilTaxClassificationCode'); // 税收分类编号
         var oilUnitPrice = Number(localStorage.getItem('selectGasPrice')); // 油品价格
+
+		var oilInfo = {
+            oilConsumable:oilConsumable,
+            oilId:oilId,
+            oilTaxClassificationCode:oilTaxClassificationCode,
+            oilUnitPrice:oilUnitPrice
+		}
+
         // 油信宝
         $("#yxb").click(function() {
             var price = getPrice();
@@ -246,19 +254,29 @@
             $("#price").val("");
         });
 
-        // 微信、支付宝
-        $("#wx,#zfb").click(function() {
+        // 微信
+        $("#wx").click(function() {
             var price = Math.round(getPrice() * 100);
             if(price == 0) {
                 return;
             }
+            var transName = '微信消费';
+            // var rst = $$.payment(price);
+            $$.payment(transName,price, oilInfo, tradingLog);
 
-            var rst = $$.payment(price);
-            console.log('wx pay now:')
-            console.log(rst)
-            tradingLog(JSON.parse(rst));
         });
+        // 支付宝支付
+        $("#zfb").click(function() {
+            var price = Math.round(getPrice() * 100);
+            if(price == 0) {
+                return;
+            }
+            var transName = '支付宝消费';
+            // var rst = $$.payment(price);
+            $$.payment(transName, price, oilInfo, tradingLog);
 
+            // tradingLog(JSON.parse(rst));
+        });
 
         $("#wzf").click(function() {
             var price = getPrice();
@@ -297,81 +315,40 @@
         });
 
         // 交易登陆存储过程
-        function tradingLog(rst) {
-            debugger
-            console.log(rst)
-            rst.amount = rst.amount / 100;
-            console.log(oilTaxClassificationCode)
-            console.log(oilId)
-            console.log(oilConsumable)
-            console.log(oilUnitPrice)
-           /* var data = {
-                "业务类型": '100300001',
-                "金额": 0.01,
-                "优惠金额": " ",
-                "实付金额": 0.01,
-                "流水号": '111963240000460482',
-                "原始流水号": " ",
-                "有效期": " ",
-                "批次号": '000002',
-                "商户号": '990791048166000',
-                "商户名": '西安通联支付测试账号',
-                "终端号": '00000012',
-                "系统参考号": " ",
-                "授权码": " ",
-                "返回码": " ",
-                "发卡行号": " ",
-                "发卡行名称": " ",
-                "卡组织或钱包机构": 'WXP',
-                "卡号": 'opn)buGyiLjW53gN50exBa_-HxVE',
-                "交易日期": '0102',
-                "交易时间": '132659',
-                "返回码解释": '交易成功',
-                "卡片回收标志": " ",
-                "备注字段": " ",
-                "交易唯一标识": " ",
-                "借贷记卡标识": " ",
-                "操作用户": '10107',
-                "商品标示": 4,
-                "商品名称": '98号 车用汽油（V）',
-                "税收分类编码": '10701010101',
-                // "商品单价": oilUnitPrice
-                "商品单价": 100
-            }*/
+        function tradingLog(rst, oilInfo) {
+            var amount = Number(rst.amount) * 0.01;
             var data = {
-                "业务类型": rst.business_id,
-                "金额": rst.amount,
+                "业务类型": rst.referenceNo,
+                "金额": amount,
                 "优惠金额": " ",
                 "实付金额": rst.amount,
-                "流水号": rst.trace_no,
+                "流水号": rst.traceNo,
                 "原始流水号": " ",
                 "有效期": " ",
-                "批次号": rst.batch_no,
-                "商户号": rst.merch_id,
-                "商户名": rst.merch_name,
-                "终端号": rst.ter_id,
+                "批次号": rst.batchNo,
+                "商户号": rst.merchantId,
+                "商户名": rst.merchantName,
+                "终端号": rst.terminalId,
                 "系统参考号": " ",
                 "授权码": " ",
                 "返回码": " ",
                 "发卡行号": " ",
                 "发卡行名称": " ",
-                "卡组织或钱包机构": rst.cups,
-                "卡号": rst.cardno,
+                "卡组织或钱包机构": rst.issue,
+                "卡号": " ",
                 "交易日期": rst.date,
                 "交易时间": rst.time,
-                "返回码解释": rst.rejcode_cn,
+                "返回码解释": " ",
                 "卡片回收标志": " ",
                 "备注字段": " ",
                 "交易唯一标识": " ",
                 "借贷记卡标识": " ",
                 "操作用户": userId,
-                "商品标示": oilId,
-                "商品名称": oilConsumable,
-                "税收分类编码": oilTaxClassificationCode,
-                "商品单价": oilUnitPrice
-                // "商品单价": 100
+                "商品标示": oilInfo.oilConsumable,
+                "商品名称": oilInfo.oilId,
+                "税收分类编码": oilInfo.oilTaxClassificationCode,
+                "商品单价": oilInfo.oilUnitPrice
             };
-
             //					var tmpl = "'{{业务类型}}',{{金额}},'{{优惠金额}}',{{实付金额}},{{流水号}},'{{原始流水号}}','{{有效期}}','{{批次号}}','{{商户号}}','{{商户名}}','{{终端号}}','{{系统参考号}}','{{授权码}}','{{返回码}}','{{发卡行号}}','{{发卡行名称}}','{{卡组织或钱包机构}}','{{卡号}}','{{交易日期}}','{{交易时间}}','{{返回码解释}}','{{卡片回收标志}}','{{备注字段}}','{{交易唯一标识}}','{{借贷记卡标识}}','{{操作用户}}'";
             //					var params = tmpl.t(data);
             //					var sql = "通联流水登录 " + params;
@@ -383,12 +360,10 @@
                 url: url,
                 data: data,
                 success: function(result) {
-                    debugger
                     $$.printTicket(result.流水号);
                     rst = [result];
                 },
                 error: function() {
-                    debugger
                     rst = [{
                         RESULT: -3,
                         MESSAGE: '通联流水登录，请重试'

@@ -10,8 +10,8 @@
 		<script>
             var scriptsCss = ["css/sm.css", "css/iconfont.css", "index.css"];
             scriptsCss.forEach(function (scriptCss) {
-                // var time = Date.now();
-                scriptCss += "?v=0.16";
+                var time = Date.now();
+                scriptCss += "?v=0.16"+time;
                 document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
             });
 		</script>
@@ -21,8 +21,8 @@
 		<script>
             var scripts = ["js/zepto.js", "js/plug.js", "js/sm.js", "js/sdk.js", "js/sdk_data_validation.js", "js/sdk_db.js", "js/layer_mobile/layer.js", "index.js"];
             scripts.forEach(function (script) {
-                // var time = Date.now();
-                script += "?v=0.17.3";
+                var time = Date.now();
+                script += "?v=0.17.3"+time;
                 document.write("<script type='text/javascript' src='" + script + "'><\/script>");
             });
 		</script>
@@ -122,8 +122,9 @@
 		</div>
 		<script>
             function plusReady() {
+                $$.printTicket('ZSY201902270000002');
 //建立一条与服务器之间的连接
-                var websocket = null;
+                /*var websocket = null;
                 //判断当前浏览器是否支持WebSocket
                 if ('WebSocket' in window) {
                     websocket = new WebSocket("ws://192.168.10.23:8080/websockets");
@@ -153,7 +154,7 @@
                 //连接关闭的回调方法
                 websocket.onclose = function () {
                     alert("WebSocket连接关闭");
-                }
+                }*/
             }
 
             var newDate = new Date();

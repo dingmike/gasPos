@@ -1398,6 +1398,225 @@ $$.sqlQuery = function (sqlData) {
 	return rst;
 }
 
+
+
+
+$$.TerminalNumVerfiy = function (verfiy) {
+
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+    intent.putExtra("transName", "终端参数");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        if (-1 == resultCode) {
+            var terminalId = data.getStringExtra("terminalId");//终端号
+            var merchantId = data.getStringExtra("merchantId");//商户号
+            var merchantName = data.getStringExtra("merchantName");//商户名
+            localStorage.setItem("ter_num", terminalId);
+            // alert("rst:"+ verfiy(rst))
+            return verfiy(terminalId); //
+        } else {
+            alert('Get android data failed');
+        }
+    };
+    main.startActivityForResult(intent, 0);
+    /*
+    $.ajax({
+        type: "POST",
+        url: "",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        success: function (data) {
+            var response = JSON.parse(data);
+            rst = response.ter_id;
+        }
+    })
+    */
+    // return rst
+}
+
+
+/**
+ * 获得终端号
+ */
+$$.TerminalNumSettingInfo = function (settingInfo) {
+
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+    intent.putExtra("transName", "终端参数");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        if (-1 == resultCode) {
+            var terminalId = data.getStringExtra("terminalId");//终端号
+            var merchantId = data.getStringExtra("merchantId");//商户号
+            var merchantName = data.getStringExtra("merchantName");//商户名
+            localStorage.setItem("ter_num", terminalId);
+            settingInfo(terminalId); //
+        } else {
+            alert('Get android data failed');
+        }
+    };
+    main.startActivityForResult(intent, 0);
+    /*
+    $.ajax({
+        type: "POST",
+        url: "",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        success: function (data) {
+            var response = JSON.parse(data);
+            rst = response.ter_id;
+        }
+    })
+    */
+    // return rst
+}
+
+
+//自动登录获取terminalId
+
+$$.TerminalNumAutoLogin = function (back) {
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+    intent.putExtra("transName", "终端参数");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        if (-1 == resultCode) {
+            var terminalId = data.getStringExtra("terminalId");//终端号
+            var merchantId = data.getStringExtra("merchantId");//商户号
+            var merchantName = data.getStringExtra("merchantName");//商户名
+            localStorage.setItem("ter_num", terminalId);
+            back(terminalId); //
+        } else {
+            alert('Get android data failed');
+        }
+    };
+    main.startActivityForResult(intent, 0);
+    /*
+    $.ajax({
+        type: "POST",
+        url: "",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        success: function (data) {
+            var response = JSON.parse(data);
+            rst = response.ter_id;
+        }
+    })
+    */
+    // return rst
+}
+
+
+
+$$.TerminalNum1 = function (username, password, jumpIndex, test) {
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+    intent.putExtra("transName", "终端参数");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        if (-1 == resultCode) {
+            var terminalId = data.getStringExtra("terminalId");//终端号
+            var merchantId = data.getStringExtra("merchantId");//商户号
+            var merchantName = data.getStringExtra("merchantName");//商户名
+            localStorage.setItem("ter_num", terminalId);
+            test(username, password, jumpIndex, terminalId); //
+        } else {
+            alert('Get android data failed');
+        }
+    };
+    main.startActivityForResult(intent, 0);
+    /*
+    $.ajax({
+        type: "POST",
+        url: "",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        success: function (data) {
+            var response = JSON.parse(data);
+            rst = response.ter_id;
+        }
+    })
+    */
+    // return rst
+}
+
+
+$$.TerminalNum = function () {
+    /**
+     * 通联支付
+     */
+    this.getTerminalNum = function () {
+        var rst = "";
+        /*
+        var data = {
+            business_id: "900100001"
+        };
+        */
+        var ComponentName = plus.android.importClass("android.content.ComponentName");
+        var Intent = plus.android.importClass("android.content.Intent");
+        var intent = new Intent();
+        intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+        intent.putExtra("transName", "终端参数");
+        var main = plus.android.runtimeMainActivity();
+        main.onActivityResult = function (requestCode, resultCode, data) {
+            if (-1 == resultCode) {
+                var terminalId = data.getStringExtra("terminalId");//终端号
+                var merchantId = data.getStringExtra("merchantId");//商户号
+                var merchantName = data.getStringExtra("merchantName");//商户名
+                localStorage.setItem("ter_num", terminalId);
+                rst = terminalId;
+            } else {
+                alert('Get android data failed');
+            }
+        };
+        main.startActivityForResult(intent, 0);
+        /*
+        $.ajax({
+            type: "POST",
+            url: "",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            async: false,
+            success: function (data) {
+                var response = JSON.parse(data);
+                rst = response.ter_id;
+            }
+        })
+        */
+        return rst
+    }
+
+    var TER_NUM_ITEM_NAME = "ter_num";
+    var terNum = localStorage.getItem(TER_NUM_ITEM_NAME);
+
+    if (!terNum) {
+        // if(window.plus) {
+        // 	if(plus.plugintest.getDeviceInfo) {
+        // 		terNum = plus.plugintest.getDeviceInfo();
+        // 		if (terNum) {
+        // 			localStorage.setItem(TER_NUM_ITEM_NAME, terNum);
+        // 		}
+        // 	}
+        // }
+        terNum = this.getTerminalNum();
+        if (terNum) {
+            localStorage.setItem(TER_NUM_ITEM_NAME, terNum);
+        }
+    }
+
+    return terNum
+}
+
+
+
 /**
  * 获得终端号
  */
@@ -1573,8 +1792,11 @@ $$.autoLogin = function (username, password, terminal, callback) {
 /**
  * 通联支付 扫码支付收款100300001
  */
-$$.payment = function (price) {
-    var rst = "";
+/**
+ * 通联支付
+ */
+$$.payment = function (transName, price, oilInfo, tradingLog) {
+    /*var rst = "";
     var data = {
         business_id: "100300001",
         amount: price
@@ -1590,8 +1812,53 @@ $$.payment = function (price) {
             rst = data;
         }
     })
-    return rst
+    return rst*/
+
+    alert("pay price:" + price)
+
+    var rst = "";
+    /*
+    var data = {
+        business_id: "900100001"
+    };
+    */
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.MainActivity"));
+    intent.putExtra("transName", transName);
+    intent.putExtra("isPrintTicket", "false");
+    intent.putExtra("amount", '000000000001'); //默认0.01
+    intent.putExtra("orderNumber", "");
+    intent.putExtra("version", "1.0.7");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        if (-1 == resultCode) {
+
+            var dataObj = {};
+            dataObj.traceNo = data.getStringExtra("traceNo");//终端号
+            dataObj.amount = data.getStringExtra("amount");//商户号
+            dataObj.batchNo = data.getStringExtra("batchNo");//商户名
+            dataObj.referenceNo = data.getStringExtra("referenceNo");//商户名
+            dataObj.cardNo = data.getStringExtra("cardNo");//商户名
+            dataObj.type = data.getStringExtra("type");//商户名
+            dataObj.issue = data.getStringExtra("issue");//商户名
+            dataObj.date = data.getStringExtra("date");//商户名
+            dataObj.time = data.getStringExtra("time");//
+            dataObj.wxOrderNumber = data.getStringExtra("wxOrderNumber");//
+            dataObj.merchantId = data.getStringExtra("merchantId");//
+            dataObj.terminalId = data.getStringExtra("terminalId");//
+            dataObj.merchantName = data.getStringExtra("merchantName");//
+            dataObj.transactionType = data.getStringExtra("transactionType");//
+            localStorage.setItem("ter_num", dataObj.terminalId);
+            tradingLog(dataObj, oilInfo); //
+        } else {
+            alert('failed');
+        }
+    };
+    main.startActivityForResult(intent, 0);
 }
+
 
 
 /**
@@ -1683,50 +1950,224 @@ $$.printThirdTicket = function (dealFlowId) {
  * dealFlowId:流水号
  * 打印支付凭证
  */
-$$.printTicket = function (dealFlowId) {
-	var sql = "流水信息明细 " + dealFlowId;
-	var detailsData = $$.sqlQuery(sql);
-	if (detailsData[0].T0004_TYPE == "1") {
-		detailsData[0].billClass = "加油"
-	}
-	var cannelInformation = detailsData[0].M0007_NAME;
-	if (!cannelInformation) {
-		cannelInformation = detailsData[0].T0004_EXCHANGE_TYPE;
-	}
-	var dataArray = ["1", "16", "0", "2", "0"];
-	var printText;
-	printText = "                      油券核销明细                 \n"
-	printText += "\n";
-	printText += "\n";
-	printText += "油站名称 :" + detailsData[0].M0005_NAME + "\n";
-	printText += "\n";
-	printText += "商品名称 :" + detailsData[0].C0002_CONSUMABLE + "\n";
-	printText += "\n";
-	printText += "商品单价 :" + detailsData[0].T0004_UNIT_PRICE + "\n";
-	printText += "\n";
-	printText += "消费金额 :" + detailsData[0].T0004_EXCHANGE_AMOUNT + "\n";
-	printText += "\n";
-	printText += "升数 :" + detailsData[0].T0004_OIL_L + "\n";
-	printText += "\n";
-	printText += "渠道信息：" + cannelInformation + "\n";
-	printText += "\n";
-	printText += "创建时间：" + detailsData[0].DATA_CREATE_TIME + "\n";
-	printText += "\n";
-	printText += "订单号：" + detailsData[0].T0004_RECORDS_NUM + "\n";
-	printText += "\n";
-	printText += "发票提取码：" + detailsData[0].发票提取码 + "\n";
-	printText += "\n";
+$$.printTicket = function (dealFlowId, isReprint) {
+    /*var sql = "流水信息明细 '" + dealFlowId + "'";
+    var detailsData = $$.sqlQuery(sql);
+    if (!detailsData || detailsData.length == 0) {
+        return;
+    }
+    var detail = detailsData[0];
 
-	dataArray.push(printText);
-	plus.plugintest.printTicket(
-		dataArray,
-		function (result) {
-			console.log(result);
-		},
-		function (error) {
-			console.log(error)
-		}
-	);
+    if (detailsData[0].T0004_TYPE == "1") {
+        detailsData[0].billClass = "加油"
+    }
+
+    var title = "加油信息\n";
+    if(isReprint)  {
+        title = "加油信息(补)\n";
+    }
+
+    var body;
+    body = ""
+    body += "油站名称 :" + detail.M0005_NAME + "\n";
+    body += "商品名称 :" + detail.C0002_CONSUMABLE + "\n";
+    body += "商品单价 :" + detail.T0004_UNIT_PRICE + "\n";
+    body += "消费金额 :" + detail.T0004_EXCHANGE_AMOUNT + "\n";
+    body += "升数 :" + detail.T0004_OIL_L + "\n";
+    body += "渠道信息：" + detail.T0004_EXCHANGE_TYPE + "\n";
+    if (detail.车牌号 && detail.车牌号.trim() != "") {
+        body += "车牌信息：" + detail.车牌号 + "\n";
+    }
+    if (detail.加油枪 && detail.加油枪.trim() != "") {
+        body += "油枪信息：" + detail.加油枪 + "\n";
+    }
+    body += "创建时间：" + detail.DATA_CREATE_TIME + "\n";
+    body += "订单号：" + detail.T0004_RECORDS_NUM + "\n";
+    if (detail.发票提取码 && detail.发票提取码.trim() != "") {
+        body += "发票提取码：" + detail.发票提取码 + "\n";
+        var icon = $$.getInvoiceURL(detail.发票提取码);
+    }
+
+    Printer.printTicket(title, body, icon);*/
+
+
+    var sql = "流水信息明细 '" + dealFlowId + "'";
+    var detailsData = $$.sqlQuery(sql);
+    if (!detailsData || detailsData.length == 0) {
+        return;
+    }
+    var detail = detailsData[0];
+
+    if (detailsData[0].T0004_TYPE == "1") {
+        detailsData[0].billClass = "加油"
+    }
+
+    var title = "加油信息\n";
+    if (isReprint) {
+        title = "加油信息(补)\n";
+    }
+    /*    var body;
+        body = ""
+        body += "油站名称 :" + detail.M0005_NAME + "\n";
+        body += "商品名称 :" + detail.C0002_CONSUMABLE + "\n";
+        body += "商品单价 :" + detail.T0004_UNIT_PRICE + "\n";
+        body += "消费金额 :" + detail.T0004_EXCHANGE_AMOUNT + "\n";
+        body += "升数 :" + detail.T0004_OIL_L + "\n";
+        body += "渠道信息：" + detail.T0004_EXCHANGE_TYPE + "\n";
+        if (detail.车牌号 && detail.车牌号.trim() != "") {
+            body += "车牌信息：" + detail.车牌号 + "\n";
+        }
+        if (detail.加油枪 && detail.加油枪.trim() != "") {
+            body += "油枪信息：" + detail.加油枪 + "\n";
+        }
+        body += "创建时间：" + detail.DATA_CREATE_TIME + "\n";
+        body += "订单号：" + detail.T0004_RECORDS_NUM + "\n";
+        if (detail.发票提取码 && detail.发票提取码.trim() != "") {
+            body += "发票提取码：" + detail.发票提取码 + "\n";
+            var icon = $$.getInvoiceURL(detail.发票提取码);
+        }*/
+    alert(detail.发票提取码);
+    if (detail.发票提取码 && detail.发票提取码.trim() != "") {
+        var icon = $$.getInvoiceURL(detail.发票提取码);
+    }
+    var bodyJson = {
+        "spos": [
+            {
+
+                "content": "http://postest.youxinbao.com.cn:8080/pos/img/qp.bmp",
+                "contenttype": "bmp",
+                "position": "center"
+            },
+            {
+                "position": "center",
+                "content": "POS签购单",
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "3"
+            },
+            {
+                "position": "left",
+                "content": "请妥善保管",
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "1"
+            },
+            {
+                "position": "center",
+                "content": "_____________________",
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "3"
+            },
+            {
+                "position": "center",
+                "content": "         ",
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "3"
+            },
+            {
+                "position": "left",
+                "content": "油站名称:"+ detail.M0005_NAME,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },
+            {
+                "position": "left",
+                "content": "商品名称:"+ detail.C0002_CONSUMABLE,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },{
+                "position": "left",
+                "content": "商品单价:"+ detail.T0004_UNIT_PRICE,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },{
+                "position": "left",
+                "content": "消费金额:"+ detail.T0004_EXCHANGE_AMOUNT,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },{
+                "position": "left",
+                "content": "升数:"+ detail.T0004_OIL_L,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },{
+                "position": "left",
+                "content": "渠道信息:"+ detail.T0004_EXCHANGE_TYPE,
+                "contenttype": "txt",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "2"
+            },
+            {
+                "position": "center",
+                "content":icon ,
+                "contenttype": "two-dimension",
+                "bold": "0",
+                "height": "-1",
+                "italic": "0",
+                "offset": "0",
+                "size": "3"
+            },
+        ]
+    };
+
+
+
+    var ComponentName = plus.android.importClass("android.content.ComponentName");
+    var Intent = plus.android.importClass("android.content.Intent");
+    var intent = new Intent();
+    intent.setComponent(new ComponentName("com.fuyousf.android.fuious", "com.fuyousf.android.fuious.CustomPrinterActivity"));
+    intent.putExtra("data", JSON.stringify(bodyJson));
+    intent.putExtra("isPrintTicket", "true");
+    var main = plus.android.runtimeMainActivity();
+    main.onActivityResult = function (requestCode, resultCode, data) {
+        alert(resultCode);
+        var reason=data.getStringExtra("reason");//终端号
+        alert(reason);
+    };
+    main.startActivityForResult(intent, 99);
+};
+$$.getInvoiceURL = function (code) {
+    var invoiceURL = "http://www.uzdust.cn/App/wyjy/tqmapply.html";
+    var qrcodeURL = "http://www.uzdust.cn/App/wyjy/tqmapply.html" + "?code=" + code;
+
+    return qrcodeURL;
 };
 
 $$.Verification = function (info) {

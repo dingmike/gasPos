@@ -9,8 +9,8 @@
 		<script>
             var scriptsCss = ["../css/sm.css"];
             scriptsCss.forEach(function (scriptCss) {
-                // var time = Date.now();
-                scriptCss += "?v=0.15";
+                var time = Date.now();
+                scriptCss += "?v=0.15"+time;
                 document.write("<link rel='stylesheet' type='text/css' href='" + scriptCss + "'>");
             });
 		</script>
@@ -162,100 +162,104 @@
 
 			function plusReady() {
 				var userId = $$.CheckloginState();
-				var uuid = $$.TerminalNum();
-				var dealFlowData, totalPriceData;
-				var jbPage = {
-					nowDate: function() {
-						var myDate = new Date();
-						var myYear = myDate.getFullYear();
-						var myMonth = myDate.getMonth() + 1;
-						var myDate = myDate.getDate();
-						myMonth = myMonth < 10 ? "0" + myMonth : myMonth;
-						myDate = myDate < 10 ? "0" + myDate : myDate;
-						var dateArry = [];
-						dateArry[0] = myYear + myMonth + myDate;
-						dateArry[1] = myYear + "-" + myMonth + "-" + myDate;
-						return dateArry;
-					},
+				// var uuid = $$.TerminalNum();
 
-					// 当班流水信息查询  参数: POS机串码    收银员标识
-					dealFlow: function() {
-						var queryDate = this.nowDate()[0];
-						var data = {
-							"POS机串码": uuid,
-							"收银员标识": userId,
-						}
-						var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
-						var params = tmpl.t(data);
-						var sql = "当班流水信息查询 " + params;
-						dealFlowData = $$.sqlQuery(sql);
-						if(dealFlowData.length > 0) {
-							for(var i = 0; i < dealFlowData.length; i++) {
-								if(dealFlowData[i].T0004_EXCHANGE_TYPE == "微信") {
-									dealFlowData[i].src = "../img/wx.png";
-									dealFlowData[i].name = "微信";
-								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "沃支付") {
-                                    dealFlowData[i].src = "../img/wzf.png";
-                                    dealFlowData[i].name = "沃支付";
-								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "支付宝") {
-									dealFlowData[i].src = "../img/zfb.png";
-									dealFlowData[i].name = "支付宝";
-								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "油信宝") {
-									dealFlowData[i].src = "../img/yxb.png";
-									dealFlowData[i].name = "油信宝";
-								} else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "智慧城24.1") {
-									dealFlowData[i].src = "../img/zhc.png";
-									dealFlowData[i].name = "智慧城24.1";
-								}
-							}
-							$$.Fill("#listData", dealFlowData);
-						} else {
-							$(".noData").show();
-						}
-					},
+                $$.TerminalNumAutoLogin(jbTest);
 
-					// 当班流水信息总金额笔数查询  参数：POS机串码   收银员标识
-					totalPrice: function() {
-						var queryDate = this.nowDate();
-						var data = {
-							"POS机串码": uuid,
-							"收银员标识": userId,
-						}
-						var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
-						var params = tmpl.t(data);
-						var sql = "当班流水信息总金额笔数查询 " + params;
-						totalPriceData = $$.sqlQuery(sql);
-						if(totalPriceData && totalPriceData[0].EXCHANGE_COUNT != "0") {
-							var total = totalPriceData.filter(function(val) {
-								return val.T0004_EXCHANGE_TYPE == "全部";
-							});
-							$(".price").text(total[0].EXCHANGE_AMOUNT + "元");
-							$(".num").text(total[0].EXCHANGE_COUNT + "笔");
-						}
-					}
-				}
+				function jbTest() {
+                    var dealFlowData, totalPriceData;
+                    var jbPage = {
+                        nowDate: function() {
+                            var myDate = new Date();
+                            var myYear = myDate.getFullYear();
+                            var myMonth = myDate.getMonth() + 1;
+                            var myDate = myDate.getDate();
+                            myMonth = myMonth < 10 ? "0" + myMonth : myMonth;
+                            myDate = myDate < 10 ? "0" + myDate : myDate;
+                            var dateArry = [];
+                            dateArry[0] = myYear + myMonth + myDate;
+                            dateArry[1] = myYear + "-" + myMonth + "-" + myDate;
+                            return dateArry;
+                        },
 
-				$(".box-title").text("当日统计(" + jbPage.nowDate()[1] + ")");
-				jbPage.dealFlow();
-				jbPage.totalPrice();
+                        // 当班流水信息查询  参数: POS机串码    收银员标识
+                        dealFlow: function() {
+                            var queryDate = this.nowDate()[0];
+                            var data = {
+                                "POS机串码": uuid,
+                                "收银员标识": userId,
+                            }
+                            var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
+                            var params = tmpl.t(data);
+                            var sql = "当班流水信息查询 " + params;
+                            dealFlowData = $$.sqlQuery(sql);
+                            if(dealFlowData.length > 0) {
+                                for(var i = 0; i < dealFlowData.length; i++) {
+                                    if(dealFlowData[i].T0004_EXCHANGE_TYPE == "微信") {
+                                        dealFlowData[i].src = "../img/wx.png";
+                                        dealFlowData[i].name = "微信";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "沃支付") {
+                                        dealFlowData[i].src = "../img/wzf.png";
+                                        dealFlowData[i].name = "沃支付";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "支付宝") {
+                                        dealFlowData[i].src = "../img/zfb.png";
+                                        dealFlowData[i].name = "支付宝";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "油信宝") {
+                                        dealFlowData[i].src = "../img/yxb.png";
+                                        dealFlowData[i].name = "油信宝";
+                                    } else if(dealFlowData[i].T0004_EXCHANGE_TYPE == "智慧城24.1") {
+                                        dealFlowData[i].src = "../img/zhc.png";
+                                        dealFlowData[i].name = "智慧城24.1";
+                                    }
+                                }
+                                $$.Fill("#listData", dealFlowData);
+                            } else {
+                                $(".noData").show();
+                            }
+                        },
 
-				// 列表跳转详情
-				$("#listData").on("click", "li", function() {
-					var dzId = $(this).attr("id");
-					var getTimestamp = new Date().getTime();
-					var w = plus.webview.create("../src/details.html?timestamp=" + getTimestamp + "&dzId=" + dzId);
-					w.show();
-				});
+                        // 当班流水信息总金额笔数查询  参数：POS机串码   收银员标识
+                        totalPrice: function() {
+                            var queryDate = this.nowDate();
+                            var data = {
+                                "POS机串码": uuid,
+                                "收银员标识": userId,
+                            }
+                            var tmpl = "'{{POS机串码}}','{{收银员标识}}'";
+                            var params = tmpl.t(data);
+                            var sql = "当班流水信息总金额笔数查询 " + params;
+                            totalPriceData = $$.sqlQuery(sql);
+                            if(totalPriceData && totalPriceData[0].EXCHANGE_COUNT != "0") {
+                                var total = totalPriceData.filter(function(val) {
+                                    return val.T0004_EXCHANGE_TYPE == "全部";
+                                });
+                                $(".price").text(total[0].EXCHANGE_AMOUNT + "元");
+                                $(".num").text(total[0].EXCHANGE_COUNT + "笔");
+                            }
+                        }
+                    }
 
-				// 交班
-				$(".button").click(function() {
-					// 打印数据
-					if(dealFlowData.length > 0) {
-						var dataArray = ["1", "16", "0", "1", "0"];
-						var printText;
-						var blank30 = "                              ";
-						printText = blank30.substr(0, 22) + "交班记录\n"
-						for(var i = 0; i < totalPriceData.length; i++) {
+                    $(".box-title").text("当日统计(" + jbPage.nowDate()[1] + ")");
+                    jbPage.dealFlow();
+                    jbPage.totalPrice();
+
+                    // 列表跳转详情
+                    $("#listData").on("click", "li", function() {
+                        var dzId = $(this).attr("id");
+                        var getTimestamp = new Date().getTime();
+                        var w = plus.webview.create("../src/details.html?timestamp=" + getTimestamp + "&dzId=" + dzId);
+                        w.show();
+                    });
+
+                    // 交班
+                    $(".button").click(function() {
+                        // 打印数据
+                        if(dealFlowData.length > 0) {
+                            var dataArray = ["1", "16", "0", "1", "0"];
+                            var printText;
+                            var blank30 = "                              ";
+                            printText = blank30.substr(0, 22) + "交班记录\n"
+                            for(var i = 0; i < totalPriceData.length; i++) {
 //							if(totalPriceData[i].T0004_EXCHANGE_TYPE == "二维码") {
 //								totalPriceData[i].T0004_EXCHANGE_TYPE = "油信宝";
 //								printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
@@ -264,42 +268,45 @@
 //							} else {
 //								printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
 //							}
-							printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
-						}
-						printText += "订单号" + blank30.substr(0, 28) + "金额\n"
-						printText += "商户名称" + blank30.substr(0, 24) + "时间\n"
-						for(var i = 0; i < dealFlowData.length; i++) {
-							printText += dealFlowData[i].T0004_RECORDS_NUM + "        " + dealFlowData[i].T0004_EXCHANGE_AMOUNT + "\n" + dealFlowData[i].name + "        " + dealFlowData[i].DATA_CREATE_TIME + "\n";
-						}
-						dataArray.push(printText);
-						plus.plugintest.printTicket(
-							dataArray,
-							function(result) {
-								console.log(result);
-							},
-							function(error) {
-								console.log(error)
-							}
-						);
-					}
+                                printText += totalPriceData[i].T0004_EXCHANGE_TYPE + ":" + totalPriceData[i].EXCHANGE_AMOUNT + "元" + blank30.substr(0, 16) + "成交数:" + totalPriceData[i].EXCHANGE_COUNT + "笔\n"
+                            }
+                            printText += "订单号" + blank30.substr(0, 28) + "金额\n"
+                            printText += "商户名称" + blank30.substr(0, 24) + "时间\n"
+                            for(var i = 0; i < dealFlowData.length; i++) {
+                                printText += dealFlowData[i].T0004_RECORDS_NUM + "        " + dealFlowData[i].T0004_EXCHANGE_AMOUNT + "\n" + dealFlowData[i].name + "        " + dealFlowData[i].DATA_CREATE_TIME + "\n";
+                            }
+                            dataArray.push(printText);
+                            plus.plugintest.printTicket(
+                                dataArray,
+                                function(result) {
+                                    console.log(result);
+                                },
+                                function(error) {
+                                    console.log(error)
+                                }
+                            );
+                        }
 
-					$.ajax({
-						url: "/PosLogout",
-						async: false,
-						contentType: "application/x-www-form-urlencoded",
-						success: function(data) {
-							var rst = JSON.parse(data);
-							if(rst.RESULT == "0") {
-								plus.nativeUI.toast("注销成功");
-								$$.LoginInfo.clearLoginInfo();
+                        $.ajax({
+                            url: "/PosLogout",
+                            async: false,
+                            contentType: "application/x-www-form-urlencoded",
+                            success: function(data) {
+                                var rst = JSON.parse(data);
+                                if(rst.RESULT == "0") {
+                                    plus.nativeUI.toast("注销成功");
+                                    $$.LoginInfo.clearLoginInfo();
 
-								// 跳转至登录页面
-								var getTimestamp = new Date().getTime();
-								plus.webview.create('login.html?timestamp=' + getTimestamp, "login").show();
-							}
-						}
-					})
-				});
+                                    // 跳转至登录页面
+                                    var getTimestamp = new Date().getTime();
+                                    plus.webview.create('login.html?timestamp=' + getTimestamp, "login").show();
+                                }
+                            }
+                        })
+                    });
+                }
+
+
 			}
 		</script>
 	</body>

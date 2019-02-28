@@ -1,156 +1,216 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-		<title>登录</title>
-		<style type="text/css">
-			body {
-				margin: 0;
-				padding: 0;
-				text-align: center;
-			}
-			
-			.title {
-				margin-top: 5rem;
-				margin-bottom: 3rem;
-			}
-			
-			.title img {
-				width: 25%;
-			}
-			
-			.input-box div {
-				margin-bottom: 1rem;
-				font-size: 1rem;
-			}
-			
-			input {
-				width: 65%;
-				height: 1.7rem;
-				padding-left: 0.5rem;
-				font-size: 1rem;
-				margin-left: 3%;
-				outline: none;
-			}
-			
-			button {
-				background-color: #E4393C;
-				border: none;
-				color: #FFFFFF;
-				width: 75%;
-				height: 2.5rem;
-				margin-top: 3.5rem;
-				font-size: 1rem;
-				outline: none;
-			}
-		</style>
-		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
-		<script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
-		<script type="text/javascript" src="../js/plug.js?version=0.11"></script>-->
-		<script>
-            var scripts = ["../js/zepto.js", "../js/sdk.js","../js/plug.js"];
-            scripts.forEach(function (script) {
-                // var time = Date.now();
-                script += "?v=0.15";
-                document.write("<script type='text/javascript' src='" + script + "'><\/script>");
-            });
-		</script>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+	<title>登录</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+			text-align: center;
+		}
 
-	<body>
-		<div class="title">
-			<img src="../img/zsylogo-login.png" alt="" />
-			<h3>中油北斗汽油平台</h3>
-		</div>
-		<div class="input-box">
-			<div>
-				<label for="name">账号：</label>
-				<input type="text" placeholder="账号" id="name" />
-			</div>
-			<div>
-				<label for="password">密码：</label>
-				<input type="password" placeholder="密码" id="password" />
-			</div>
-		</div>
-		<button>登录</button>
-		<script type="text/javascript">
-			if(window.plus) {
-				plusReady();
-				closeSplashscreen();
-			} else {
-				document.addEventListener('plusready', plusReady, false);
-			}
+		.title {
+			margin-top: 5rem;
+			margin-bottom: 3rem;
+		}
 
-			function plusReady() {
-				var webView = plus.android.importClass("android.webkit.WebView");
-				webView.setWebContentsDebuggingEnabled(true);
+		.title img {
+			width: 25%;
+		}
 
-				var all = plus.webview.all();
-				for(var i = 0, len = all.length; i < len; i++) {
-					if(all[i].id != "login" && all[i].id != "HelloH5") {
-						all[i].close();
-					}
-				}
+		.input-box div {
+			margin-bottom: 1rem;
+			font-size: 1rem;
+		}
 
-				var ws = plus.webview.currentWebview();
-				var clickNum = 0;
-				plus.key.addEventListener('backbutton', function() {
-					ws.canBack(function(e) {
-						clickNum++;
-						if(clickNum > 1) {
-							plus.runtime.quit();
-						} else {
-							plus.nativeUI.toast("再按一次退出应用");
-						}
-					})
-				});
+		input {
+			width: 65%;
+			height: 1.7rem;
+			padding-left: 0.5rem;
+			font-size: 1rem;
+			margin-left: 3%;
+			outline: none;
+		}
 
-				// 本地有存储，自动登录
-				var loginInfo = $$.LoginInfo.getLoginInfo();
-				if(loginInfo) {
-					var terminal = $$.TerminalNum();
-					$$.autoLogin(loginInfo.username, loginInfo.password, terminal,jumpIndex);
-				}
-				
-				$("button").click(function() {
-					var username = $("#name").val();
-					var password = $("#password").val();
-					var terminal = $$.TerminalNum();
-					
-					if(!username) {
-						plus.nativeUI.toast( "请输入账号");
-						return
-					}
+		button {
+			background-color: #E4393C;
+			border: none;
+			color: #FFFFFF;
+			width: 75%;
+			height: 2.5rem;
+			margin-top: 3.5rem;
+			font-size: 1rem;
+			outline: none;
+		}
+	</style>
+	<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
+    <script type="text/javascript" src="../js/sdk.js?version=0.11"></script>
+    <script type="text/javascript" src="../js/plug.js?version=0.11"></script>-->
+	<script>
+        var scripts = ["../js/zepto.js", "../js/sdk.js", "../js/plug.js"];
+        scripts.forEach(function (script) {
+            var time = Date.now();
+            script += "?v=0.17.7"+time;
+            document.write("<script type='text/javascript' src='" + script + "'><\/script>");
+        });
+	</script>
+</head>
 
-					if(!password) {
-						plus.nativeUI.toast( "请输入密码");
-						return
-					}
+<body>
+<div class="title">
+	<img src="../img/zsylogo-login.png" alt=""/>
+	<h3>中油北斗汽油平台2</h3>
+</div>
+<div class="input-box">
+	<div>
+		<label for="name">账号：</label>
+		<input type="text" placeholder="账号" id="name"/>
+	</div>
+	<div>
+		<label for="password">密码：</label>
+		<input type="password" placeholder="密码" id="password"/>
+	</div>
+</div>
+<button>登录</button>
+<script type="text/javascript">
 
-					if(!terminal) {
-						plus.nativeUI.toast( "取得终端号失败，请重试");
-						return
-					}
+   /* $("button").click(function () {
+        alert(1)
+        var username = $("#name").val();
+        var password = $("#password").val();
+        //var terminal = '61505071';//$$.TerminalNum();
+        $$.TerminalNum1(username, password, jumpIndex, test)
 
-					$$.autoLogin(username, password, terminal, jumpIndex);
-				});
+    });
 
-				function jumpIndex() {
-                    var getTimestamp = new Date().getTime();
-                    plus.webview.create('../index.html?timestamp=' + getTimestamp, 'index').show();
-                    plus.webview.create('oilpricesetting.html?timestamp=' + getTimestamp, 'oilpricesetting').show();
-                    // plus.webview.create('background.html?timestamp=' + getTimestamp, 'background').hide();
-					var ws = plus.webview.currentWebview();
-					plus.webview.close(ws);
-				}
-			}
+    function test(username, password, jumpIndex, terminal) {
+        alert('ok:' + terminal)
+        if (!username) {
+            plus.nativeUI.toast("请输入账号");
+            return
+        }
 
-			function closeSplashscreen() {
-				plus.navigator.closeSplashscreen();
-			}
-		</script>
-	</body>
+        if (!password) {
+            plus.nativeUI.toast("请输入密码");
+            return
+        }
+
+        if (!terminal) {
+            plus.nativeUI.toast("取得终端号失败，请重试");
+            return
+        }
+
+        $$.autoLogin(username, password, terminal, jumpIndex);
+    }
+
+    function jumpIndex() {
+        var getTimestamp = new Date().getTime();
+        plus.webview.create('../index.html?timestamp=' + getTimestamp, 'index').show();
+        plus.webview.create('oilpricesetting.html?timestamp=' + getTimestamp, 'oilpricesetting').show();
+        plus.webview.create('background.html?timestamp=' + getTimestamp, 'background').hide();
+        var ws = plus.webview.currentWebview();
+        plus.webview.close(ws);
+    }
+*/
+
+    if(window.plus) {
+        alert(0)
+        plusReady();
+    } else {
+        document.addEventListener('plusready', plusReady, false);
+    }
+
+    function plusReady() {
+        closeSplashscreen();
+        closeOtherWebview();
+
+        var webView = plus.android.importClass("android.webkit.WebView");
+        webView.setWebContentsDebuggingEnabled(true);
+
+        var all = plus.webview.all();
+        for (var i = 0, len = all.length; i < len; i++) {
+            if (all[i].id != "login" && all[i].id != "HelloH5") {
+                all[i].close();
+            }
+        }
+
+        var ws = plus.webview.currentWebview();
+        var clickNum = 0;
+        plus.key.addEventListener('backbutton', function () {
+            ws.canBack(function (e) {
+                clickNum++;
+                if (clickNum > 1) {
+                    plus.runtime.quit();
+                } else {
+                    plus.nativeUI.toast("再按一次退出应用");
+                }
+            })
+        });
+        // 自动登录
+		$$.TerminalNumAutoLogin(function(data){
+            // 本地有存储，自动登录
+            var loginInfo = $$.LoginInfo.getLoginInfo();
+            if (loginInfo) {
+                $$.autoLogin(loginInfo.username, loginInfo.password, data, jumpIndex);
+            }
+		});
+
+
+        $("button").click(function () {
+            var username = $("#name").val();
+            var password = $("#password").val();
+            //var terminal = '61505071';//$$.TerminalNum();
+            $$.TerminalNum1(username, password, jumpIndex, test);
+        });
+
+        function test(username, password, jumpIndex, terminal) {
+            alert('ok:' + terminal)
+            if (!username) {
+                plus.nativeUI.toast("请输入账号");
+                return
+            }
+
+            if (!password) {
+                plus.nativeUI.toast("请输入密码");
+                return
+            }
+
+            if (!terminal) {
+                plus.nativeUI.toast("取得终端号失败，请重试");
+                return
+            }
+
+            $$.autoLogin(username, password, terminal, jumpIndex);
+        }
+
+
+        function jumpIndex() {
+            var getTimestamp = new Date().getTime();
+            plus.webview.create('../index.html?timestamp=' + getTimestamp, 'index').show();
+            plus.webview.create('oilpricesetting.html?timestamp=' + getTimestamp, 'oilpricesetting').show();
+            plus.webview.create('background.html?timestamp=' + getTimestamp, 'background').hide();
+            var ws = plus.webview.currentWebview();
+            plus.webview.close(ws);
+        }
+    }
+
+    function closeSplashscreen() {
+        plus.navigator.closeSplashscreen();
+    }
+
+    function closeOtherWebview() {
+        var all = plus.webview.all();
+        var current = plus.webview.currentWebview().id;
+        for (var i = 0, len = all.length; i < len; i++) {
+            if (all[i].id !== current) {
+                all[i].close();
+            }
+        }
+    }
+</script>
+</body>
 
 </html>

@@ -92,6 +92,7 @@
 					</li>
 				</ul>
 			</div>
+			<button id="printBtn" class="button button-fill button-danger" style="margin:15px auto 0;display:block;width:30%">打印发票</button>
 		</script>
 		<!--<script type="text/javascript" src="../js/zepto.js?version=0.11"></script>
 		<script type="text/javascript" src="../js/sm.js?version=0.11"></script>
@@ -103,7 +104,7 @@
             var scripts = ["../js/zepto.js", "../js/sm.js", "../js/sdk.js", "../js/common.js", "../js/plug.js", "../js/common-plus.js"];
             scripts.forEach(function (script) {
                 // var time = Date.now();
-                script += "?v=0.15";
+				script += "?v=0.17.4";
                 document.write("<script type='text/javascript' src='" + script + "'><\/script>");
             });
 		</script>
@@ -142,6 +143,9 @@
 				detailsData[i].name = detailsData[i].T0004_EXCHANGE_TYPE;
 			}
 			$$.Fill("#details", detailsData);
+			$("#printBtn").click(function(){
+				$$.printTicket(dealFlowId, true);
+			})
 		</script>
 	</body>
 
